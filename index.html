@@ -17,7 +17,7 @@
         .arrow {
             /* margin: auto; */
             margin-top: 584px;
-            margin-left: 369px;
+            margin-left: 370px;
             position: absolute;
             /* transform: rotate(90deg); */
             
@@ -28,56 +28,87 @@
             position: absolute;
             z-index: 1;
         }
+        .line {
+            width: 1px;
+            height: 700px;
+            margin-top: 0px;
+            margin-left: 399.5px;
+            border: 1px solid black;
+            position: relative;
+        }
     </style>
 </head>
 <body>
     <div class="wrapper">
         <img src="img/arrow.png" alt="" class="arrow">
-        
+        <div class="line"></div>
     </div>
     
-    <script src="jquery-3.2.0.js"></script>
-    <script>
-        window.onload = function() {
-            init();   
-        }
-        
-        // 화살표 개체
-        var arrow = $('.arrow');
-        
-        
-        
+<script src="jquery-3.2.0.js"></script>
+<script>
 
-        var nx = 0;
-        var bx = 0;
-        function init() {
-            $('.wrapper').append('<img src="img/circle3.png" class="bubble">')
-        }
+    
+    // 화살표 개체
+    var arrow = $('.arrow');
 
-        setInterval(function() {
-            // 버블 객체
-            var bubble = $('.bubble');
+    // 화살표 각도
+    var nx = 0;
+
+    // 버블 각도
+    var bubbleDeg = 0;
+    var bSpeed = 5;
+
+    $('.wrapper').append('<img src="img/circle3.png" class="bubble">')
+
+    var keypress={};
+    
+    setInterval(function(e) {
+        // 버블 객체
+        var bubble = $('.bubble');
+        window.onkeydown = function(e) {
+        if(e.keyCode==32) {
+
+            var rad = 2*Math.PI*(bubbleDeg/360);
+            var x = 800*Math.tan(rad)
+            // var angle = Math.tan(bubbleDeg)
+            console.log('rad:'+rad)
+            console.log('x길이는:'+x);
+
+            bubble.animate({top:-590,left:x})
+        }
+    }
+     
+        
+            // console.log();
             
-            window.onkeydown = function(e) {
-            
-            console.log(e.keyCode);
             // 오른쪽 키 입력시 오른쪽으로 회전
-            if(e.keyCode==39) {
-                this.nx += 2;
-                this.bx += 2;                 
+            if(keypress['39']) {
+                this.nx += 1.5;
+                this.bubbleDeg += 1.5;                 
                 arrow.css('transform', 'rotate('+nx+'deg)');
-                bubble.css('transform', 'rotate('+bx+'deg)');
+                bubble.css('transform', 'rotate('+bubbleDeg+'deg)');
             }
             // 왼쪽 키 입력시 왼쪽으로 회전
-            if(e.keyCode==37) {
-                this.nx -= 2;
-                this.bx -= 2;
+            if(keypress['37']) {
+                this.nx -= 1.5;
+                this.bubbleDeg -= 1.5;
                 arrow.css('transform', 'rotate('+nx+'deg)');
-                bubble.css('transform', 'rotate('+bx+'deg)')
-        
+                bubble.css('transform', 'rotate('+bubbleDeg+'deg)');
             }
-        }
-        }, 10)
-    </script>
+            // if(keypress['32']) {
+                
+            //     this.bSpeed -=5;
+            //     bubble.css('transform', 'translateX('+bSpeed+'px)')
+            //     bubble.css('transform', 'translateY('+bSpeed+'px)')
+            // }
+        
+    }, 10)
+    $(window).keydown(function(e){ // 어떤 키가 눌렸는지 저장 
+		keypress[e.which.toString()] = true;
+	});
+	$(window).keyup(function(e){ // 눌렸던 키를 해제
+		keypress[e.which.toString()] = false;
+	});    
+</script>
 </body>
 </html>
