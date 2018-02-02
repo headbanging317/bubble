@@ -17,7 +17,7 @@
 
         .arrow {
             /* margin: auto; */
-            margin-top: 0px;
+            margin-top: 610px;
             margin-left: 369px;
             /* position: absolute; */
             transform: rotate(90deg);
@@ -26,7 +26,29 @@
 </head>
 <body>
     <div class="wrapper">
-        <img src="img/arrow-896214_960_720-iloveimg-resized-iloveimg-resized.png" alt="" class="arrow">    
+        <img src="img/arrow-896214_960_720-iloveimg-resized-iloveimg-resized.png" alt="" class="arrow">
     </div>
+<script src="jquery-3.2.0.js"></script>
+<script>
+    var defaultRotate = 90;
+    var arrowisMoving = false;
+
+    var rotateArrow = function() {
+
+    }
+
+    setInterval(function() {
+        
+    })
+
+    window.onkeydown = (e) => {
+        console.log(e.keyCode)
+        $('img').css('transform', 'rotate'+defaultRotate+1+'deg)');
+    }
+
+
+    
+
+</script>
 </body>
 </html>
