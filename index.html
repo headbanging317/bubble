@@ -10,23 +10,74 @@
 			width: 800px;
 			height: 700px;
 			border: 1px solid red;
-			/* position: relative; */
+			position: relative;
 			margin: 0 auto;
 			overflow: hidden;
 		}
-
         .arrow {
             /* margin: auto; */
-            margin-top: 0px;
+            margin-top: 584px;
             margin-left: 369px;
-            /* position: absolute; */
-            transform: rotate(90deg);
+            position: absolute;
+            /* transform: rotate(90deg); */
+            
+        }
+        .bubble {
+            margin-top: 585px;
+            margin-left: 369px;
+            position: absolute;
+            z-index: 1;
         }
     </style>
 </head>
 <body>
     <div class="wrapper">
-        <img src="img/arrow-896214_960_720-iloveimg-resized-iloveimg-resized.png" alt="" class="arrow">    
+        <img src="img/arrow.png" alt="" class="arrow">
+        
     </div>
+    
+    <script src="jquery-3.2.0.js"></script>
+    <script>
+        window.onload = function() {
+            init();   
+        }
+        
+        // 화살표 개체
+        var arrow = $('.arrow');
+        
+        
+        
+
+        var nx = 0;
+        var bx = 0;
+        function init() {
+            $('.wrapper').append('<img src="img/circle3.png" class="bubble">')
+        }
+
+        setInterval(function() {
+            // 버블 객체
+            var bubble = $('.bubble');
+            
+            window.onkeydown = function(e) {
+            
+            console.log(e.keyCode);
+            // 오른쪽 키 입력시 오른쪽으로 회전
+            if(e.keyCode==39) {
+                this.nx += 2;
+                this.bx += 2;                 
+                arrow.css('transform', 'rotate('+nx+'deg)');
+                bubble.css('transform', 'rotate('+bx+'deg)');
+            }
+            // 왼쪽 키 입력시 왼쪽으로 회전
+            if(e.keyCode==37) {
+                this.nx -= 2;
+                this.bx -= 2;
+                arrow.css('transform', 'rotate('+nx+'deg)');
+                bubble.css('transform', 'rotate('+bx+'deg)')
+        
+            }
+        }
+        }, 10)
+    </script>
 </body>
 </html>
