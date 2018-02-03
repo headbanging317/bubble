@@ -30,9 +30,9 @@
         }
         .line {
             width: 1px;
-            height: 700px;
+            height: 1400px;
             margin-top: 0px;
-            margin-left: 484.5px;
+            margin-left: 399.5px;
             border: 1px solid black;
             position: relative;
         }
@@ -41,7 +41,7 @@
 <body>
     <div class="wrapper">
         <img src="img/arrow.png" alt="" class="arrow">
-        <img src="img/blueLine.png" alt="" class="line">
+        <img src="img/blueLine2.png" alt="" class="line">
     </div>
     
 <script src="jquery-3.2.0.js"></script>
@@ -68,8 +68,12 @@
         window.onkeydown = function(e) {
         if(e.keyCode==32) {
 
+            // 라디안 변환
             var rad = 2*Math.PI*(bubbleDeg/360);
+
+            // 밑변의 길이
             var x = 800*Math.tan(rad)
+            
             // var angle = Math.tan(bubbleDeg)
             console.log('rad:'+rad)
             console.log('x길이는:'+x);
