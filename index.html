@@ -7,8 +7,8 @@
     <title>Document</title>
     <style>
         .wrapper{
-			width: 800px;
-			height: 700px;
+			width: 600px;
+			height: 500px;
 			border: 1px solid red;
 			position: relative;
 			margin: 0 auto;
@@ -16,8 +16,8 @@
 		}
         .arrow {
             /* margin: auto; */
-            margin-top: 584px;
-            margin-left: 370px;
+            margin-top: 387px;
+            margin-left: 281.5px;
             position: absolute;
             /* transform: rotate(90deg); */
             
@@ -30,42 +30,76 @@
         }
         .line {
             width: 1px;
-            height: 1400px;
-            margin-top: 0px;
+            height: 1748px;
+            margin-top: -174px;
             margin-left: 399.5px;
             border: 1px solid black;
             position: relative;
+        }
+
+        .attr {
+            position: absolute; top:0; left:0;
+            width: 100%;
+            height: 100%;
         }
     </style>
 </head>
 <body>
     <div class="wrapper">
-        <img src="img/arrow.png" alt="" class="arrow">
-        <img src="img/blueLine2.png" alt="" class="line">
+        <img src="img/ATTRACT1.png" alt="" class="attr">
+        <img src="img/arrow2.png" alt="" class="arrow">
+        <img src="img/blueLine4.png" alt="" class="line">
     </div>
     
 <script src="jquery-3.2.0.js"></script>
 <script>
 
-    
-    // 화살표 개체
-    var arrow = $('.arrow');
 
-    // 화살표 각도
-    var nx = 0;
+var line = $('.line');      // 직선 개체
+var arrow = $('.arrow');    // 화살표 개체
+var bubble = $('.bubble');  // 버블 개체
 
-    // 버블 각도
-    var bubbleDeg = 0;
-    var bSpeed = 5;
+// 화살표 각도
+var nx = 0;
 
-    $('.wrapper').append('<img src="img/circle3.png" class="bubble">')
+// 버블 각도
+var bubbleDeg = 0;
 
-    var keypress={};
-    
-    setInterval(function(e) {
-        // 버블 객체
-        var bubble = $('.bubble');
-        window.onkeydown = function(e) {
+var bSpeed = 5;
+
+$('.wrapper').append('<img src="img/circle3.png" class="bubble">')
+
+// 입력된 키를 담아둘 오브젝트
+var keypress={};
+
+function angleTest() {
+
+
+    window.onkeyup = function(e) {
+
+        console.log('CurrentKey : '+e.keyCode);
+        console.log('Degree : '+bubbleDeg);
+        console.log('');
+
+        // 1번 키 입력시 29.74 각도로 이동
+        if(e.keyCode==49) {
+            console.log('Number 1 press : Go to 29.74 deg')
+            console.log('');
+            arrow.css('transform', 'rotate(29.74deg)');
+            bubble.css('transform', 'rotate(29.74deg)');
+            line.css('transform', 'rotate(29.74deg)');
+        }
+
+        // 2번 키 입력시 45도 각도로 이동
+        if(e.keyCode==50) {
+            console.log('Number 2 press : Go to 45 deg')
+            console.log('');
+            arrow.css('transform', 'rotate(45deg)');
+            bubble.css('transform', 'rotate(45deg)');
+            line.css('transform', 'rotate(45deg)');
+        }
+
+        // 스페이스바 입력시
         if(e.keyCode==32) {
 
             // 라디안 변환
@@ -73,45 +107,57 @@
 
             // 밑변의 길이
             var x = 800*Math.tan(rad)
-            
+
             // var angle = Math.tan(bubbleDeg)
             console.log('rad:'+rad)
             console.log('x길이는:'+x);
 
-            bubble.animate({top:-590,left:x})
+            bubble.animate({top:0,left:x})
         }
     }
-            // console.log();
-            
-            // 오른쪽 키 입력시 오른쪽으로 회전
-            if(keypress['39']) {
-                this.nx += 1.5;
-                this.bubbleDeg += 1.5;                 
-                arrow.css('transform', 'rotate('+nx+'deg)');
-                bubble.css('transform', 'rotate('+bubbleDeg+'deg)');
-            }
-            // 왼쪽 키 입력시 왼쪽으로 회전
-            if(keypress['37']) {
-                this.nx -= 1.5;
-                this.bubbleDeg -= 1.5;
-                arrow.css('transform', 'rotate('+nx+'deg)');
-                bubble.css('transform', 'rotate('+bubbleDeg+'deg)');
-            }
-            // if(keypress['32']) {
-                
-            //     this.bSpeed -=5;
-            //     bubble.css('transform', 'translateX('+bSpeed+'px)')
-            //     bubble.css('transform', 'translateY('+bSpeed+'px)')
-            // }
-        
-    }, 10)
 
-    $(window).keydown(function(e){ // 어떤 키가 눌렸는지 저장 
-		keypress[e.which.toString()] = true;
-	});
-	$(window).keyup(function(e){ // 눌렸던 키를 해제
-		keypress[e.which.toString()] = false;
-	});    
+}
+
+function moveArrow() {
+
+    // 오른쪽
+    if(keypress['39']) {
+        this.nx += 1.5;
+        this.bubbleDeg += 1.5;                 
+        arrow.css('transform', 'rotate('+nx+'deg)');
+        bubble.css('transform', 'rotate('+bubbleDeg+'deg)');
+        line.css('transform', 'rotate('+bubbleDeg+'deg)');
+    }
+
+    // 왼쪽
+    if(keypress['37']) {
+        this.nx -= 1.5;
+        this.bubbleDeg -= 1.5;
+        arrow.css('transform', 'rotate('+nx+'deg)');
+        bubble.css('transform', 'rotate('+bubbleDeg+'deg)');
+        line.css('transform', 'rotate('+bubbleDeg+'deg)');
+    }
+
+    // if(keypress['32']) {
+        
+    //     this.bSpeed -=5;
+    //     bubble.css('transform', 'translateX('+bSpeed+'px)')
+    //     bubble.css('transform', 'translateY('+bSpeed+'px)')
+    // }
+}
+
+
+angleTest()
+    
+setInterval(moveArrow, 10)
+
+$(window).keydown(function(e){ // 어떤 키가 눌렸는지 저장 
+    keypress[e.which.toString()] = true;
+});
+$(window).keyup(function(e){ // 눌렸던 키를 해제
+    keypress[e.which.toString()] = false;
+});    
+
 </script>
 </body>
 </html>
