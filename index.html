@@ -6,9 +6,19 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <style>
+        .playGround {
+            position: absolute;
+            margin-left: 210px;
+            margin-top: 52.5px;
+            width: 280px;
+            height: 429.5px;
+            border: 1px solid yellow;
+            z-index: 3;
+        }
         .wrapper{
-			width: 600px;
-			height: 500px;
+            margin-top: 100px;
+			width: 700px;
+			height: 504px;
 			border: 1px solid red;
 			position: relative;
 			margin: 0 auto;
@@ -17,7 +27,7 @@
         .arrow {
             /* margin: auto; */
             margin-top: 387px;
-            margin-left: 281.5px;
+            margin-left: 332.5px;
             position: absolute;
             /* transform: rotate(90deg); */
             
@@ -31,12 +41,11 @@
         .line {
             width: 1px;
             height: 1748px;
-            margin-top: -174px;
-            margin-left: 399.5px;
+            margin-top: -443.5px;
+            margin-left: 349.5px;
             border: 1px solid black;
             position: relative;
         }
-
         .attr {
             position: absolute; top:0; left:0;
             width: 100%;
@@ -46,10 +55,12 @@
 </head>
 <body>
     <div class="wrapper">
+        <div class="playGround"></div>
         <img src="img/ATTRACT1.png" alt="" class="attr">
         <img src="img/arrow2.png" alt="" class="arrow">
         <img src="img/blueLine4.png" alt="" class="line">
     </div>
+
     
 <script src="jquery-3.2.0.js"></script>
 <script>
@@ -71,6 +82,7 @@ $('.wrapper').append('<img src="img/circle3.png" class="bubble">')
 
 // 입력된 키를 담아둘 오브젝트
 var keypress={};
+
 
 function angleTest() {
 
@@ -118,6 +130,7 @@ function angleTest() {
 
 }
 
+// 화살표 움직임
 function moveArrow() {
 
     // 오른쪽
@@ -150,6 +163,7 @@ function moveArrow() {
 angleTest()
     
 setInterval(moveArrow, 10)
+
 
 $(window).keydown(function(e){ // 어떤 키가 눌렸는지 저장 
     keypress[e.which.toString()] = true;
