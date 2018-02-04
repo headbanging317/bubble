@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <style>
+
         .playGround {
             position: absolute;
             margin-left: 210px;
@@ -51,25 +52,45 @@
             width: 100%;
             height: 100%;
         }
+        .blue {
+            width: 40px;
+            height: 40px;
+            margin-top: 358px;
+            margin-left: 120.5px;
+            z-index: 2;
+            position: absolute;
+        }
     </style>
 </head>
 <body>
     <div class="wrapper">
-        <div class="playGround"></div>
+        <div class="playGround">
+            <img src="img/blueBubble.png" alt="" class="blue">
+        </div>
+
         <img src="img/ATTRACT1.png" alt="" class="attr">
         <img src="img/arrow2.png" alt="" class="arrow">
         <img src="img/blueLine4.png" alt="" class="line">
+        <!-- <div class="lunchBubble"></div> -->
+        
     </div>
-
+    <!-- <canvas id="canvas" class="tutorial" ></canvas> -->
     
 <script src="jquery-3.2.0.js"></script>
 <script>
 
+// var canvas = document.getElementById('canvas');
+// var ctx = canvas.getContext('2d');
+// ctx.beginPath();
+// ctx.arc(100,100,50,0,(Math.PI/180)*360,false);
+// ctx.fillStyle = "rgb(0, 255, 255)";
+// ctx.fill();
+// ctx.stroke();
 
 var line = $('.line');      // 직선 개체
 var arrow = $('.arrow');    // 화살표 개체
 var bubble = $('.bubble');  // 버블 개체
-
+var blue = $('.blue');
 
 var nx = 0;
 
@@ -83,6 +104,17 @@ $('.wrapper').append('<img src="img/circle3.png" class="bubble">')
 // 입력된 키를 담아둘 오브젝트
 var keypress={};
 
+
+// function lunch() {
+//     
+//     window.onkeydown = function(e) {
+//         // space == 32
+//         if(e.keyCode==32) {
+//             blue.animate({top:0})
+            
+//         }
+//     }
+// }
 
 function angleTest() {
 
@@ -124,7 +156,7 @@ function angleTest() {
             console.log('rad:'+rad)
             console.log('x길이는:'+x);
 
-            bubble.animate({top:0,left:x})
+            blue.animate({top:-100,left:-100})
         }
     }
 
@@ -135,8 +167,8 @@ function moveArrow() {
 
     // 오른쪽
     if(keypress['39']) {
-        this.nx += 1.5;
-        this.bubbleDeg += 1.5;                 
+        this.nx += 1;
+        this.bubbleDeg += 1;                 
         arrow.css('transform', 'rotate('+nx+'deg)');
         bubble.css('transform', 'rotate('+bubbleDeg+'deg)');
         line.css('transform', 'rotate('+bubbleDeg+'deg)');
@@ -144,8 +176,8 @@ function moveArrow() {
 
     // 왼쪽
     if(keypress['37']) {
-        this.nx -= 1.5;
-        this.bubbleDeg -= 1.5;
+        this.nx -= 1;
+        this.bubbleDeg -= 1;
         arrow.css('transform', 'rotate('+nx+'deg)');
         bubble.css('transform', 'rotate('+bubbleDeg+'deg)');
         line.css('transform', 'rotate('+bubbleDeg+'deg)');
@@ -161,7 +193,7 @@ function moveArrow() {
 
 
 angleTest()
-    
+// lunch()
 setInterval(moveArrow, 10)
 
 
