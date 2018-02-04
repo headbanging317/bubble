@@ -32,7 +32,7 @@
             width: 1px;
             height: 700px;
             margin-top: 0px;
-            margin-left: 484.5px;
+            margin-left: 399.5px;
             border: 1px solid black;
             position: relative;
         }
@@ -47,7 +47,9 @@
 <script src="jquery-3.2.0.js"></script>
 <script>
 
-    
+    // 직선 개체
+    var line = $('.line');
+
     // 화살표 개체
     var arrow = $('.arrow');
 
@@ -85,14 +87,18 @@
                 this.bubbleDeg += 1.5;                 
                 arrow.css('transform', 'rotate('+nx+'deg)');
                 bubble.css('transform', 'rotate('+bubbleDeg+'deg)');
+                line.css('transform', 'rotate('+nx+'deg)');
             }
+
             // 왼쪽 키 입력시 왼쪽으로 회전
             if(keypress['37']) {
                 this.nx -= 1.5;
                 this.bubbleDeg -= 1.5;
                 arrow.css('transform', 'rotate('+nx+'deg)');
                 bubble.css('transform', 'rotate('+bubbleDeg+'deg)');
+                line.css('transform', 'rotate('+nx+'deg)');
             }
+
             // if(keypress['32']) {
                 
             //     this.bSpeed -=5;
