@@ -118,20 +118,21 @@ function lunch() {
         var rad = 2*Math.PI*(bubbleDeg/360);    // Radian
         var y = 358*Math.tan(rad);
         var y2 = 121/Math.tan(rad);
-        var tan = Math.tan(rad);
         
+        var tan = Math.tan(rad);
+        var y3 = 242/tan;
         // space == 32
         if(e.keyCode==32) {
             var bounce; // 튕기는 횟수
             // 17.63
-            if(bubbleDeg>0 && bubbleDeg<=18) bounce = 0;
-            if(bubbleDeg>=17.63) bounce = 1;
-
+            if(bubbleDeg>=0 && bubbleDeg<=18.63) bounce = 0;
+            if(bubbleDeg>=18.63 && bubbleDeg<=44) bounce = 1;
+            if(bubbleDeg>44) bounce = 2;
             // 양수 음수 상태
             var status = false; 
             if(bubbleDeg>=0) status=true;  
             else status = false;
-        
+            
             
             if(status) {    // 각도가 양수일 때
                 switch(bounce) {
@@ -140,18 +141,24 @@ function lunch() {
                         break;
                     case 1: // 1번 팅길때
                         blue.animate({top:-y2, left:121}, function() {
+                            console.log('y2:::'+blue.position().top);
                             blue.animate({top:-359, left:121-((379-y2)*tan)}, function() {
                                 console.log('x는말이죠 '+(359-y2)*tan)
                             })
                         })
                         break;
                     case 2: // 2번 팅길 때
+                        blue.animate({top:-y2, left:121}, function() {
+                            blue.animate({top:-y2-y3, left:-121}, function() {
+                                blue.animate({top:-359, left:((359-(y2+y3))*tan)-121})
+                            })
+                        })
                         break;
 
                 }
 
             } else {    // 각도가 음수 일때
-            
+                console.log('각도가 음수')
             }
             
         }
