@@ -27,9 +27,13 @@
 		}
         .arrow {
             /* margin: auto; */
-            margin-top: 387px;
-            margin-left: 332.5px;
+            /* margin-top: 387px; */
+            /* margin-left: 332.5px; */
+
+            margin-top: 333px;
+            margin-left: 122px;
             position: absolute;
+            z-index: 3;
             /* transform: rotate(90deg); */
             
         }
@@ -59,6 +63,7 @@
             margin-left: 120.5px;
             z-index: 2;
             position: absolute;
+            /* visibility: hidden; */
         }
     </style>
 </head>
@@ -66,10 +71,10 @@
     <div class="wrapper">
         <div class="playGround">
             <img src="img/blueBubble.png" alt="" class="blue">
+            <img src="img/arrow2.png" alt="" class="arrow">
         </div>
 
         <img src="img/ATTRACT1.png" alt="" class="attr">
-        <img src="img/arrow2.png" alt="" class="arrow">
         <img src="img/blueLine4.png" alt="" class="line">
         <!-- <div class="lunchBubble"></div> -->
         
@@ -105,33 +110,74 @@ $('.wrapper').append('<img src="img/circle3.png" class="bubble">')
 var keypress={};
 
 
-// function lunch() {
-//     
-//     window.onkeydown = function(e) {
-//         // space == 32
-//         if(e.keyCode==32) {
-//             blue.animate({top:0})
+function lunch() {
+    
+    window.onkeydown = function(e) {
+        var bubbleY = blue.position().top;
+        var bubbleX = blue.position().left;
+        var rad = 2*Math.PI*(bubbleDeg/360);    // Radian
+        var y = 358*Math.tan(rad);
+        var y2 = 121/Math.tan(rad);
+        var tan = Math.tan(rad);
+        
+        // space == 32
+        if(e.keyCode==32) {
+            var bounce; // 튕기는 횟수
+            if(bubbleDeg>0 && bubbleDeg<=17.63) bounce = 0;
+            if(bubbleDeg>=17.63) bounce = 1;
+
+            // 양수 음수 상태
+            var status = false; 
+            if(bubbleDeg>=0) status=true;  
+            else status = false;   
             
-//         }
-//     }
-// }
+
+
+            
+            if(status) {    // 각도가 양수일 때
+                switch(bounce) {
+                    case 0: // 0번 팅길때
+                        blue.animate({top:-359, left:tan*359})
+                        break;
+                    case 1: // 1번 팅길때
+                        blue.animate({top:-y2, left:121}, function() {
+                            blue.animate({top:-359, left:121-((379-y2)*tan)}, function() {
+                                console.log('x는말이죠 '+(359-y2)*tan)
+                            })
+                        })
+                        break;
+                    case 2: // 2번 팅길 때
+                        break;
+
+                }
+
+            } else {    // 각도가 음수 일때
+            
+            }
+            
+        }
+    }
+}
 
 function angleTest() {
 
 
     window.onkeyup = function(e) {
-
+        var bubbleY = blue.position().top;
+        var bubbleX = blue.position().left;
+        console.log('bubbleY :'+bubbleY);
+        console.log('bubbleX :'+bubbleX);
         console.log('CurrentKey : '+e.keyCode);
         console.log('Degree : '+bubbleDeg);
         console.log('');
 
         // 1번 키 입력시 29.74 각도로 이동
         if(e.keyCode==49) {
-            console.log('Number 1 press : Go to 29.74 deg')
+            console.log('Number 1 press : Go to 20.35 deg')
             console.log('');
-            arrow.css('transform', 'rotate(29.74deg)');
-            bubble.css('transform', 'rotate(29.74deg)');
-            line.css('transform', 'rotate(29.74deg)');
+            arrow.css('transform', 'rotate(20.35deg)');
+            bubble.css('transform', 'rotate(20.35deg)');
+            line.css('transform', 'rotate(20.35deg)');
         }
 
         // 2번 키 입력시 45도 각도로 이동
@@ -143,23 +189,29 @@ function angleTest() {
             line.css('transform', 'rotate(45deg)');
         }
 
-        // 스페이스바 입력시
-        if(e.keyCode==32) {
-
-            // 라디안 변환
-            var rad = 2*Math.PI*(bubbleDeg/360);
-
-            // 밑변의 길이
-            var x = 800*Math.tan(rad)
-
-            // var angle = Math.tan(bubbleDeg)
-            console.log('rad:'+rad)
-            console.log('x길이는:'+x);
-
-            blue.animate({top:-100,left:-100})
+        // 3번 키 입력시 21.39
+        if(e.keyCode==51) {
+            arrow.css('transform', 'rotate(17.63deg)');
+            bubble.css('transform', 'rotate(17.63deg)');
+            line.css('transform', 'rotate(17.63deg)');
         }
-    }
 
+        // 스페이스바 입력시
+        // if(e.keyCode==32) {
+
+        //     // 라디안 변환
+        //     var rad = 2*Math.PI*(bubbleDeg/360);
+
+        //     // 밑변의 길이
+        //     var x = 800*Math.tan(rad)
+
+        //     // var angle = Math.tan(bubbleDeg)
+        //     console.log('rad:'+rad)
+        //     console.log('x길이는:'+x);
+
+        //     // blue.animate({top:-100,left:-100})
+        // }
+    }
 }
 
 // 화살표 움직임
@@ -193,7 +245,7 @@ function moveArrow() {
 
 
 angleTest()
-// lunch()
+lunch()
 setInterval(moveArrow, 10)
 
 
