@@ -123,16 +123,15 @@ function lunch() {
         // space == 32
         if(e.keyCode==32) {
             var bounce; // 튕기는 횟수
-            if(bubbleDeg>0 && bubbleDeg<=17.63) bounce = 0;
+            // 17.63
+            if(bubbleDeg>0 && bubbleDeg<=18) bounce = 0;
             if(bubbleDeg>=17.63) bounce = 1;
 
             // 양수 음수 상태
             var status = false; 
             if(bubbleDeg>=0) status=true;  
-            else status = false;   
-            
-
-
+            else status = false;
+        
             
             if(status) {    // 각도가 양수일 때
                 switch(bounce) {
