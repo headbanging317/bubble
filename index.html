@@ -103,7 +103,13 @@
 var line = $('.line');      // 직선 개체
 var arrow = $('.arrow');    // 화살표 개체
 var bubble = $('.bubble');  // 버블 개체
-var blue = $('.blue');
+var blue = $('.blue');      //blue bubble
+var readyBubble;
+var lunchedBubble;
+var isFitted;
+
+
+
 
 var nx = 0;
 
@@ -131,10 +137,12 @@ function lunch() {
         
         var tan = Math.tan(rad);
         var y3 = 242/tan;
+        
         // space == 32
         if(e.keyCode==84) {
             console.log(blue.position().top)
         }
+
         if(e.keyCode==32) {
 
             var bounce; // 튕기는 횟수
@@ -143,7 +151,8 @@ function lunch() {
             else if(bubbleDeg>=18.63 && bubbleDeg<45.32 || bubbleDeg<-18.63 && bubbleDeg>=-45.32) bounce = 1;
             else if(bubbleDeg>=45.32 && bubbleDeg<59.32 || bubbleDeg<-45.32 && bubbleDeg>=-59.32) bounce = 2;
             else if(bubbleDeg>=59.32 && bubbleDeg<67.03 || bubbleDeg<-59.32 && bubbleDeg>=-67.03) bounce = 3;
-            else if(bubbleDeg>=67.03 && bubbleDeg<71.79 || bubbleDeg<-67.03 && bubbleDeg>=-71.79) bounce = 4;            
+            else if(bubbleDeg>=67.03 && bubbleDeg<71.79 || bubbleDeg<-67.03 && bubbleDeg>=-71.79) bounce = 4;
+
             // 양수 음수 상태, 판별
             var status = false; 
             if(bubbleDeg>=0) status=true;  
@@ -330,6 +339,12 @@ function moveArrow() {
     //     bubble.css('transform', 'translateX('+bSpeed+'px)')
     //     bubble.css('transform', 'translateY('+bSpeed+'px)')
     // }
+}
+
+
+// Stage 1
+function stage_1() {
+
 }
 
 
