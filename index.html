@@ -21,7 +21,7 @@
             height:389.5px;
             margin-left: 20px;
             margin-top: 20px;
-            border: 1px rgb(14, 231, 61) solid;
+            /* border: 1px rgb(14, 231, 61) solid; */
             z-index: 5;
         }
         .wrapper{
@@ -104,12 +104,19 @@
         .waitBubble {
             width: 40px;
             height: 40px;
-            /* margin-top: 338px;
-            margin-left: 100.5px; */
+            margin-top: 350px;
+            margin-left: 200px;
             z-index: 2;
             position: absolute;
+            /* top = 12
+            left 99.5 */
         }
-
+        #test {
+            width: 40px;
+            height: 40px;
+            margin-left: 200px;
+            margin-top: -20px; 
+        }
 
     </style>
 </head>
@@ -126,22 +133,19 @@
         
     </div>
     <!-- <canvas id="canvas" class="tutorial" ></canvas> -->
-    <input type="text" id="asd" class="asd">
+    <input type="text" id="delayInput" class="asd">
+
 <script src="jquery-3.2.0.js"></script>
 <script>
+
 $(document).ready(()=> {
     init();
 })
 
-// var canvas = document.getElementById('canvas');
-// var ctx = canvas.getContext('2d');
-// ctx.beginPath();
-// ctx.arc(100,100,50,0,(Math.PI/180)*360,false);
-// ctx.fillStyle = "rgb(0, 255, 255)";
-// ctx.fill();
-// ctx.stroke();
+
 function init() {
-    $('#asd').focus();
+    $('#delayInput').focus();
+    
 }
 
 var line = $('.line');      // 직선 개체
@@ -167,7 +171,7 @@ var randomBubble = Math.floor((Math.random()*4))
 var bubbleColor;
 
 
-
+$('.bubblePathRound').append('<img src="img/red.png" class="stopBubble bubble" id=test>')
 switch(randomBubble) {
     case 0:
         bubbleColor = 'blue';
@@ -183,7 +187,7 @@ switch(randomBubble) {
         break;
 }
 
-$('.bubblePathRound').append('<img src="img/'+bubbleColor+'.png" class="loadedBubble" id='+bubbleColor+'>')
+$('.bubblePathRound').append('<img src="img/'+bubbleColor+'.png" class="loadedBubble bubble" id='+bubbleColor+'>')
 
 for(var k = 0; k<20; k++) {
     var randomWaitb = Math.floor((Math.random()*4))
@@ -201,17 +205,35 @@ for(var k = 0; k<20; k++) {
         bubbleColor = 'yellow';
         break;
     }
-    $('.bubblePathRound').append('<img src="img/'+bubbleColor+'.png" class="waitBubble" id='+k+'>')
+    $('.bubblePathRound').append('<img src="img/'+bubbleColor+'.png" class="waitBubble bubble" id='+k+'>')
 }
 
 
 
+
+// 발사후에 버블 클래스 변경 & 다음 입력 딜레이
+function launchingDelay(){
+    
+    $(this).addClass("stopBubble").removeClass("loadedBubble");
+
+    // 19번 부터 loadedBubble이 발사되면 차례대로 loadedBubble로 animate
+    $('#'+i).animate({top:-12, left:-99.5}, function(){
+        $('#'+i).addClass("loadedBubble").removeClass("waitBubble");
+        i--;
+        $(this).removeClass().addClass('bubble').addClass('loadedBubble').css('top', '0').css('left', '0')
+        input.focus();
+    })
+}
+
+function test() {
+    console.log('test')
+}
 // 입력된 키를 담아둘 오브젝트
 var keypress={};
 
-var play = $('.asd');
+var input = $('#delayInput');
 
-play.keydown(function(e) {
+input.keydown(function(e) {
     console.log(e.keyCode)
         var loadedBubble = $('.loadedBubble')
         // var a = document.getElementById('p').childNodes;
@@ -227,22 +249,18 @@ play.keydown(function(e) {
         // space == 32
         if(e.keyCode==229) {
             // console.log(keyFlag)
-            play.blur();
+            input.blur();
             
         }
 
         if(e.keyCode==32) {
-            // 버블 장전
-            // b.animate({top:338, left:100.5}, function() {
-                
-            //     // b.removeClass('waitBubble');
-            //     // b.addClass('loadedBubble');
-            //     // loadedBubble.removeClass('loadedBubble');
-            play.blur();
+
+            // 제어권을 잃는다
+            input.blur();
             
-            // })
-            keyFlag=true;
-            console.log(keyFlag)
+            
+            // keyFlag=true;
+            // console.log(keyFlag)
             var bounce; // 튕기는 횟수
             // 각도에 따른 팅기는 횟수
             if(bubbleDeg>=0 && bubbleDeg<18.63 || bubbleDeg<0 && bubbleDeg>=-18.63) bounce = 0;
@@ -264,56 +282,29 @@ play.keydown(function(e) {
             if(status) {    // 각도가 양수일 때
                 switch(bounce) {
                     case 0: // 0번 팅길때
-                    
-                        loadedBubble.animate({top:-359, left:tan*359}, function() {
-                            
-                            $(this).addClass("stopBubble").removeClass("loadedBubble");
-    
-
-                            // 19번 부터 loadedBubble이 발사되면 차례대로 loadedBubble로 animate
-                            $('#'+i).animate({top:338, left:100.5}, function(){
-                                $('#'+i).addClass("loadedBubble").removeClass("waitBubble");
-                                i--;
-                                $(this).removeClass().addClass('loadedBubble').css('top', '0').css('left', '0')
-                                play.focus();
-                            })
-                            
-
-                        })
-                        
+                        loadedBubble.animate({top:-359, left:tan*359}, launchingDelay)
+                        collision();
                         break;
+                        
                     case 1: // 1번 팅길때
                         loadedBubble.animate({top:-y2, left:121}, function() {
-                            
-                            loadedBubble.animate({top:-359, left:121-((359-y2)*tan)}, function() {
-                                $(this).addClass("stopBubble").removeClass("loadedBubble");
-    
-
-                            // 19번 부터 loadedBubble이 발사되면 차례대로 loadedBubble로 animate
-                            $('#'+i).animate({top:338, left:100.5}, function(){
-                                $('#'+i).addClass("loadedBubble").removeClass("waitBubble");
-                                i--;
-                                $(this).removeClass().addClass('loadedBubble').css('top', '0').css('left', '0')
-                            })
-                            })
-                            
+                            loadedBubble.animate({top:-359, left:121-((359-y2)*tan)}, launchingDelay)
                         })
                         break;
+
                     case 2: // 2번 팅길 때
                         loadedBubble.animate({top:-y2, left:121}, function() {
                             loadedBubble.animate({top:-3*y2, left:-121}, function() {
-                                loadedBubble.animate({top:-359, left:-(121-((359-(3*y2))*tan))}, function() {
-                                    
-                                })
+                                loadedBubble.animate({top:-359, left:-(121-((359-(3*y2))*tan))}, launchingDelay)
                             })
                         })
                         break;
+
                     case 3: // 3번 팅길 때
                         loadedBubble.animate({top:-y2, left:121}, function() {
                             loadedBubble.animate({top:-3*y2, left:-121}, function(){
                                 loadedBubble.animate({top:-5*y2, left:121}, function(){
-                                    loadedBubble.animate({top:-359, left:121-((359-(5*y2))*tan)}, function(){
-                                    })
+                                    loadedBubble.animate({top:-359, left:121-((359-(5*y2))*tan)}, launchingDelay)
                                 })
                             })
                         })
@@ -323,9 +314,7 @@ play.keydown(function(e) {
                             loadedBubble.animate({top:-3*y2, left:-121}, function() {
                                 loadedBubble.animate({top:-5*y2, left:121}, function() {
                                     loadedBubble.animate({top:-7*y2, left:-121}, function() {
-                                        loadedBubble.animate({top:-359, left:-(121-((359-(7*y2))*tan))}, function() {
-
-                                        })
+                                        loadedBubble.animate({top:-359, left:-(121-((359-(7*y2))*tan))}, launchingDelay)
                                     })
                                 })
                             })
@@ -336,22 +325,19 @@ play.keydown(function(e) {
             } else {    // 각도가 음수 일때
                 switch(bounce) {
                     case 0: // 0번 팅길때
-                        loadedBubble.animate({top:-359, left:tan*359})
+                        loadedBubble.animate({top:-359, left:tan*359}, launchingDelay)
+                        collision();
                         break;
                     case 1: // 1번 팅길때
                         loadedBubble.animate({top:y2, left:-121}, function() {
-                     
-                            loadedBubble.animate({top:-359, left:-(121+((359+y2)*tan))}, function() {
-                             
-                            })
+                            loadedBubble.animate({top:-359, left:-(121+((359+y2)*tan))}, launchingDelay)
                         })
                         break;
+
                     case 2: // 2번 팅길 때
                         loadedBubble.animate({top:y2, left:-121}, function() {
                             loadedBubble.animate({top:3*y2, left:121}, function() {
-                                loadedBubble.animate({top:-359, left:(121+((359+(3*y2))*tan))}, function() {
-                                    
-                                })
+                                loadedBubble.animate({top:-359, left:(121+((359+(3*y2))*tan))}, launchingDelay)
                             })
                         })
                         break;
@@ -359,8 +345,7 @@ play.keydown(function(e) {
                         loadedBubble.animate({top:y2, left:-121}, function() {
                             loadedBubble.animate({top:3*y2, left:121}, function(){
                                 loadedBubble.animate({top:5*y2, left:-121}, function(){
-                                    loadedBubble.animate({top:-359, left:-(121+((359+(5*y2))*tan))}, function(){
-                                    })
+                                    loadedBubble.animate({top:-359, left:-(121+((359+(5*y2))*tan))}, launchingDelay)
                                 })
                             })
                         })
@@ -370,9 +355,7 @@ play.keydown(function(e) {
                             loadedBubble.animate({top:3*y2, left:121}, function() {
                                 loadedBubble.animate({top:5*y2, left:-121}, function() {
                                     loadedBubble.animate({top:7*y2, left:121}, function() {
-                                        loadedBubble.animate({top:-359, left:-(121+((359+(7*y2))*tan))}, function() {
-
-                                        })
+                                        loadedBubble.animate({top:-359, left:-(121+((359+(7*y2))*tan))}, launchingDelay)
                                     })
                                 })
                             })
@@ -384,185 +367,7 @@ play.keydown(function(e) {
 })
 var keyFlag=false
 
-// function lunch() {
 
-    
-    
-//     window.onkeydown = function(e) {
-        
-//         console.log(e.keyCode)
-//         var loadedBubble = $('.loadedBubble')
-//         // var a = document.getElementById('p').childNodes;
-        
-
-//         var rad = 2*Math.PI*(bubbleDeg/360);    // Radian
-//         var y = 358*Math.tan(rad);
-//         var y2 = 121/Math.tan(rad);
-//         // console.log(bubbleDeg)
-//         var tan = Math.tan(rad);
-//         var y3 = 242/tan;
-        
-//         // space == 32
-//         if(e.keyCode==84) {
-//             // console.log(keyFlag)
-
-            
-//         }
-
-//         if(e.keyCode==32) {
-//             // 버블 장전
-//             // b.animate({top:338, left:100.5}, function() {
-                
-//             //     // b.removeClass('waitBubble');
-//             //     // b.addClass('loadedBubble');
-//             //     // loadedBubble.removeClass('loadedBubble');
-                
-            
-//             // })
-//             keyFlag=true;
-//             console.log(keyFlag)
-//             var bounce; // 튕기는 횟수
-//             // 각도에 따른 팅기는 횟수
-//             if(bubbleDeg>=0 && bubbleDeg<18.63 || bubbleDeg<0 && bubbleDeg>=-18.63) bounce = 0;
-//             else if(bubbleDeg>=18.63 && bubbleDeg<45.32 || bubbleDeg<-18.63 && bubbleDeg>=-45.32) bounce = 1;
-//             else if(bubbleDeg>=45.32 && bubbleDeg<59.32 || bubbleDeg<-45.32 && bubbleDeg>=-59.32) bounce = 2;
-//             else if(bubbleDeg>=59.32 && bubbleDeg<67.03 || bubbleDeg<-59.32 && bubbleDeg>=-67.03) bounce = 3;
-//             else if(bubbleDeg>=67.03 && bubbleDeg<71.79 || bubbleDeg<-67.03 && bubbleDeg>=-71.79) bounce = 4;
-
-//             // 양수 음수 상태, 판별
-//             var status = false; 
-//             if(bubbleDeg>=0) status=true;  
-//             else status = false;
-            
-            
-//             var b = $('.bubblePathRound').children().last();    
-//             var c = $('.bubblePathRound').children().first(); // loadedBubble
-            
-            
-//             if(status) {    // 각도가 양수일 때
-//                 switch(bounce) {
-//                     case 0: // 0번 팅길때
-                    
-//                         loadedBubble.animate({top:-359, left:tan*359}, function() {
-                            
-//                             $(this).addClass("stopBubble").removeClass("loadedBubble");
-    
-
-//                             // 19번 부터 loadedBubble이 발사되면 차례대로 loadedBubble로 animate
-//                             $('#'+i).animate({top:338, left:100.5}, function(){
-//                                 $('#'+i).addClass("loadedBubble").removeClass("waitBubble");
-//                                 i--;
-//                                 $(this).removeClass().addClass('loadedBubble').css('top', '0').css('left', '0')
-                                
-//                             })
-                            
-
-//                         })
-                        
-//                         break;
-//                     case 1: // 1번 팅길때
-//                         loadedBubble.animate({top:-y2, left:121}, function() {
-                            
-//                             loadedBubble.animate({top:-359, left:121-((359-y2)*tan)}, function() {
-//                                 $(this).addClass("stopBubble").removeClass("loadedBubble");
-    
-
-//                             // 19번 부터 loadedBubble이 발사되면 차례대로 loadedBubble로 animate
-//                             $('#'+i).animate({top:338, left:100.5}, function(){
-//                                 $('#'+i).addClass("loadedBubble").removeClass("waitBubble");
-//                                 i--;
-//                                 $(this).removeClass().addClass('loadedBubble').css('top', '0').css('left', '0')
-//                             })
-//                             })
-                            
-//                         })
-//                         break;
-//                     case 2: // 2번 팅길 때
-//                         loadedBubble.animate({top:-y2, left:121}, function() {
-//                             loadedBubble.animate({top:-3*y2, left:-121}, function() {
-//                                 loadedBubble.animate({top:-359, left:-(121-((359-(3*y2))*tan))}, function() {
-                                    
-//                                 })
-//                             })
-//                         })
-//                         break;
-//                     case 3: // 3번 팅길 때
-//                         loadedBubble.animate({top:-y2, left:121}, function() {
-//                             loadedBubble.animate({top:-3*y2, left:-121}, function(){
-//                                 loadedBubble.animate({top:-5*y2, left:121}, function(){
-//                                     loadedBubble.animate({top:-359, left:121-((359-(5*y2))*tan)}, function(){
-//                                     })
-//                                 })
-//                             })
-//                         })
-//                         break;
-//                     case 4: // 4번 팅길 때
-//                         loadedBubble.animate({top:-y2, left:121}, function() {
-//                             loadedBubble.animate({top:-3*y2, left:-121}, function() {
-//                                 loadedBubble.animate({top:-5*y2, left:121}, function() {
-//                                     loadedBubble.animate({top:-7*y2, left:-121}, function() {
-//                                         loadedBubble.animate({top:-359, left:-(121-((359-(7*y2))*tan))}, function() {
-
-//                                         })
-//                                     })
-//                                 })
-//                             })
-//                         })
-
-//                 }
-
-//             } else {    // 각도가 음수 일때
-//                 switch(bounce) {
-//                     case 0: // 0번 팅길때
-//                         loadedBubble.animate({top:-359, left:tan*359})
-//                         break;
-//                     case 1: // 1번 팅길때
-//                         loadedBubble.animate({top:y2, left:-121}, function() {
-                     
-//                             loadedBubble.animate({top:-359, left:-(121+((359+y2)*tan))}, function() {
-                             
-//                             })
-//                         })
-//                         break;
-//                     case 2: // 2번 팅길 때
-//                         loadedBubble.animate({top:y2, left:-121}, function() {
-//                             loadedBubble.animate({top:3*y2, left:121}, function() {
-//                                 loadedBubble.animate({top:-359, left:(121+((359+(3*y2))*tan))}, function() {
-                                    
-//                                 })
-//                             })
-//                         })
-//                         break;
-//                     case 3: // 3번 팅길 때
-//                         loadedBubble.animate({top:y2, left:-121}, function() {
-//                             loadedBubble.animate({top:3*y2, left:121}, function(){
-//                                 loadedBubble.animate({top:5*y2, left:-121}, function(){
-//                                     loadedBubble.animate({top:-359, left:-(121+((359+(5*y2))*tan))}, function(){
-//                                     })
-//                                 })
-//                             })
-//                         })
-//                         break;
-//                     case 4: // 4번 팅길 때
-//                         loadedBubble.animate({top:y2, left:-121}, function() {
-//                             loadedBubble.animate({top:3*y2, left:121}, function() {
-//                                 loadedBubble.animate({top:5*y2, left:-121}, function() {
-//                                     loadedBubble.animate({top:7*y2, left:121}, function() {
-//                                         loadedBubble.animate({top:-359, left:-(121+((359+(7*y2))*tan))}, function() {
-
-//                                         })
-//                                     })
-//                                 })
-//                             })
-//                         })
-
-//                 }
-//             } 
-//         }
-//         keyFlag=false;
-//     }
-    
-// }
 
 function angleTest() {
 
@@ -647,6 +452,53 @@ function moveArrow() {
     //     bubble.css('transform', 'translateY('+bSpeed+'px)')
     // }
 }
+
+// 충돌
+function collision() {
+    
+    var bubble = $('.bubble');
+    var stopBubble = $('.stopBubble');
+    var loadedBubble = $('.loadedBubble');
+    
+    setInterval(function() {
+        var y = stopBubble.offset().top-20;
+        var y1 = loadedBubble.offset().top-20;
+        var x = stopBubble.offset().left-20;
+        var x1 = loadedBubble.offset().left-20;
+
+        var k = Math.pow(x-x1,2)+Math.pow(y-y1,2)
+        var j = Math.sqrt(k)
+		console.log((a-c))
+
+        if(j<=39)
+            loadedBubble.animate().stop();
+
+    }, 10)
+//     (function looper (i) {
+// 	setTimeout(function() {
+//         var a = Math.abs(stopBubble.offset().top-20);
+//         var c = Math.abs(loadedBubble.offset().top-20);
+//         var b = Math.abs(stopBubble.offset().left-20);
+//         var d = Math.abs(loadedBubble.offset().left-20);
+//         var k = ((a-c)*(a-c))+((b-d)*(b-d))
+//         var j = Math.sqrt(k)
+// 		console.log((a-c))
+
+//         if(j<=39)
+//             loadedBubble.animate().stop();
+
+// 		if ( 10 < ++i )
+// 			looper (i);
+// 	}, 10)
+// })(i);
+    
+    // if(Math.abs(a-c)==38 && Math.abs(b-d==38))
+    //     loadedBubble.stop().animate();
+
+   
+    
+}
+
 
 
 // Stage 1
