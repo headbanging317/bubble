@@ -248,7 +248,7 @@ var keypress={};
 var input = $('#delayInput');
 
 input.keydown(function(e) {
-    console.log(e.keyCode)
+    // console.log(e.keyCode)
         var loadedBubble = $('.loadedBubble')
         var movingBubble = $('.movingBubble')
         // var a = document.getElementById('p').childNodes;
@@ -546,13 +546,13 @@ function collision() {
     //     }, 1)
     // }
     var i = 0;
-    var check = setInterval(function() {
+    setInterval(function() {
         var loadedBubble = $('.loadedBubble')
         var stopBubble = $('.stopBubble')
         var movingBubble = $('.movingBubble')
         movingBubble.removeClass('.stopBubble')
-            // var x1 = loadedBubble.offset().left+359;
-            // var y1 = stopBubble[0].offset().top+82;
+        // var x1 = loadedBubble.offset().left+359;
+        // var y1 = stopBubble[0].offset().top+82;
        
         
         var g;
@@ -562,30 +562,33 @@ function collision() {
         
         // g= stopBubble[1].offset().left;
         
-        console.log(stopBubble[i].offsetLeft-movingBubble.offset().left+359)
         
-        i = i+1;
-        // var x = movingBubble.offset().top;
-        // console.log(x)
-        // console.log(movingBubble.offset().top)
-        if(false)
-            console.log('good'+h)
-        else
-            collision = false;
-
-        if(collision) {
-            // loadedBubble.animate().stop(launchingDelay);
-            loadedBubble.animate().stop();
-            collision = true;
+        // console.log(movingBubble.offset().top-stopBubble[0].offsetTop-81.5)
+        // console.log(stopBubble[0].offsetLeft)
+        console.log(movingBubble.offset().left-stopBubble[0].offsetLeft-508)
+        try {
+            // g = Math.pow(movingBubble.offset().top-stopBubble[0].offsetTop-81.5, 2) + Math.pow(movingBubble.offset().left-stopBubble[0].offsetLeft-508, 2)
+            // h = Math.sqrt(g)
+            
+            for(var i = 0; i<stopBubble.length; i++) {
+                g = Math.pow(movingBubble.offset().top-stopBubble[i].offsetTop-81.5, 2) + Math.pow(movingBubble.offset().left-stopBubble[i].offsetLeft-508, 2)
+                h = Math.sqrt(g)
+                if(h<=44) 
+                    collision = true;
+                else
+                    collision = false;
+                if(collision) {
+                    // loadedBubble.animate().stop(launchingDelay);
+                    movingBubble.animate().stop();
+                    movingBubble.removeClass('movingBubble').addClass('stopBubble')
+                    collision = true;
+                }
+            }
+        } catch(e) {
+            console.log(e.message)
         }
-        // else
-        // launchingDelay();
-        
-        // console.log('kkkkkk : '+j);        
-        
-    }, 20)
-    // check();
-// console.log(z)
+    }, 10)
+
     // 재장전
     launchingDelay();
     // clearInterval();
