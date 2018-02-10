@@ -117,6 +117,14 @@
             margin-left: 200px;
             margin-top: -20px; 
         }
+        .movingBubble {
+            width: 40px;
+            height: 40px;
+            margin-top: 338px;
+            margin-left: 100.5px;
+            z-index: 2;
+            position: absolute;
+        }
 
     </style>
 </head>
@@ -171,7 +179,7 @@ var randomBubble = Math.floor((Math.random()*4))
 var bubbleColor;
 
 
-$('.bubblePathRound').append('<img src="img/red.png" class="stopBubble bubble" id=test>')
+$('.bubblePathRound').append('<img src="img/red.png" class="stopBubble" id=test>')
 switch(randomBubble) {
     case 0:
         bubbleColor = 'blue';
@@ -187,7 +195,7 @@ switch(randomBubble) {
         break;
 }
 
-$('.bubblePathRound').append('<img src="img/'+bubbleColor+'.png" class="loadedBubble bubble" id='+bubbleColor+'>')
+$('.bubblePathRound').append('<img src="img/'+bubbleColor+'.png" class="loadedBubble" id='+bubbleColor+'>')
 
 for(var k = 0; k<20; k++) {
     var randomWaitb = Math.floor((Math.random()*4))
@@ -205,24 +213,30 @@ for(var k = 0; k<20; k++) {
         bubbleColor = 'yellow';
         break;
     }
-    $('.bubblePathRound').append('<img src="img/'+bubbleColor+'.png" class="waitBubble bubble" id='+k+'>')
+    $('.bubblePathRound').append('<img src="img/'+bubbleColor+'.png" class="waitBubble" id='+k+'>')
 }
 
 
 
 
 // 발사후에 버블 클래스 변경 & 다음 입력 딜레이
-function launchingDelay(){
+function launchingDelay() {
+    var bubble = $('.bubble');
+    var stopBubble = $('.stopBubble');
+    var loadedBubble = $('.loadedBubble');
+
     
-    $(this).addClass("stopBubble").removeClass("loadedBubble");
+    
 
     // 19번 부터 loadedBubble이 발사되면 차례대로 loadedBubble로 animate
     $('#'+i).animate({top:-12, left:-99.5}, function(){
         $('#'+i).addClass("loadedBubble").removeClass("waitBubble");
+        
+        $(this).removeClass().addClass('loadedBubble').css('top', '0').css('left', '0')
         i--;
-        $(this).removeClass().addClass('bubble').addClass('loadedBubble').css('top', '0').css('left', '0')
         input.focus();
     })
+    loadedBubble.removeClass('loadedBubble');
 }
 
 function test() {
@@ -236,6 +250,7 @@ var input = $('#delayInput');
 input.keydown(function(e) {
     console.log(e.keyCode)
         var loadedBubble = $('.loadedBubble')
+        var movingBubble = $('.movingBubble')
         // var a = document.getElementById('p').childNodes;
         
 
@@ -254,7 +269,8 @@ input.keydown(function(e) {
         }
 
         if(e.keyCode==32) {
-
+            // clearInterval(check);
+            loadedBubble.addClass('movingBubble')
             // 제어권을 잃는다
             input.blur();
             
@@ -281,15 +297,25 @@ input.keydown(function(e) {
             
             if(status) {    // 각도가 양수일 때
                 switch(bounce) {
+
                     case 0: // 0번 팅길때
-                        loadedBubble.animate({top:-359, left:tan*359}, launchingDelay)
-                        collision();
+                        loadedBubble.animate({top:-359, left:tan*359}, function() {
+                            loadedBubble.removeClass().addClass('stopBubble');
+                            // movingBubble.removeClass('movingBubble')
+                            
+                        })
+                        collision();    // 충돌될때 멈추기
+                        
+                        // launchingDelay();
                         break;
                         
                     case 1: // 1번 팅길때
-                        loadedBubble.animate({top:-y2, left:121}, function() {
-                            loadedBubble.animate({top:-359, left:121-((359-y2)*tan)}, launchingDelay)
-                        })
+                        // loadedBubble.animate({top:-y2, left:121}, function() {
+                        //     loadedBubble.animate({top:-359, left:121-((359-y2)*tan)}, launchingDelay)
+                        // })
+                        loadedBubble.animate({top:-y2, left:121}).animate({top:-359, left:121-((359-y2)*tan)}, launchingDelay)
+                        collision();
+                        // launchingDelay();
                         break;
 
                     case 2: // 2번 팅길 때
@@ -298,16 +324,18 @@ input.keydown(function(e) {
                                 loadedBubble.animate({top:-359, left:-(121-((359-(3*y2))*tan))}, launchingDelay)
                             })
                         })
+                        collision();
                         break;
 
                     case 3: // 3번 팅길 때
                         loadedBubble.animate({top:-y2, left:121}, function() {
-                            loadedBubble.animate({top:-3*y2, left:-121}, function(){
-                                loadedBubble.animate({top:-5*y2, left:121}, function(){
+                            loadedBubble.animate({top:-3*y2, left:-121}, function() {
+                                loadedBubble.animate({top:-5*y2, left:121}, function() {
                                     loadedBubble.animate({top:-359, left:121-((359-(5*y2))*tan)}, launchingDelay)
                                 })
                             })
                         })
+                        collision();
                         break;
                     case 4: // 4번 팅길 때
                         loadedBubble.animate({top:-y2, left:121}, function() {
@@ -319,11 +347,14 @@ input.keydown(function(e) {
                                 })
                             })
                         })
+                    collision();
+                    break;
 
                 }
 
             } else {    // 각도가 음수 일때
                 switch(bounce) {
+
                     case 0: // 0번 팅길때
                         loadedBubble.animate({top:-359, left:tan*359}, launchingDelay)
                         collision();
@@ -332,6 +363,8 @@ input.keydown(function(e) {
                         loadedBubble.animate({top:y2, left:-121}, function() {
                             loadedBubble.animate({top:-359, left:-(121+((359+y2)*tan))}, launchingDelay)
                         })
+                        collision();
+                        
                         break;
 
                     case 2: // 2번 팅길 때
@@ -340,15 +373,17 @@ input.keydown(function(e) {
                                 loadedBubble.animate({top:-359, left:(121+((359+(3*y2))*tan))}, launchingDelay)
                             })
                         })
+                        collision();
                         break;
                     case 3: // 3번 팅길 때
                         loadedBubble.animate({top:y2, left:-121}, function() {
-                            loadedBubble.animate({top:3*y2, left:121}, function(){
-                                loadedBubble.animate({top:5*y2, left:-121}, function(){
+                            loadedBubble.animate({top:3*y2, left:121}, function() {
+                                loadedBubble.animate({top:5*y2, left:-121}, function() {
                                     loadedBubble.animate({top:-359, left:-(121+((359+(5*y2))*tan))}, launchingDelay)
                                 })
                             })
                         })
+                        collision();
                         break;
                     case 4: // 4번 팅길 때
                         loadedBubble.animate({top:y2, left:-121}, function() {
@@ -360,12 +395,13 @@ input.keydown(function(e) {
                                 })
                             })
                         })
-
+                    collision();
+                    break;
                 }
             } 
         }
 })
-var keyFlag=false
+
 
 
 
@@ -401,9 +437,26 @@ function angleTest() {
 
         // 3번 키 입력시 21.39
         if(e.keyCode==51) {
-            arrow.css('transform', 'rotate(17.63deg)');
-            bubble.css('transform', 'rotate(17.63deg)');
-            line.css('transform', 'rotate(17.63deg)');
+            var z;
+            var p;
+             var loadedBubble = $('.loadedBubble')
+             var stopBubble = $('.stopBubble')
+            var x1 = loadedBubble.offset().left+359;
+            var y1 = loadedBubble.offset().top-82;
+    
+         //    console.log(loadedBubble.offsetTop);
+         //    for(var i=0; i<array.length; i++) {
+         //     z = array.offset().top-20;
+         //    }
+         //    console.log('Heelo'+typeof(stopBubble))
+             // for(var i = 0; i<stopBubble.length; i++) {
+             //     z = stopBubble[i].offsetTop;
+             // }
+             // console.log(z)
+                 
+                 z = stopBubble.offsetTop;
+                 p = stopBubble.offsetLeft;
+                 console.log(movingBubble.offset().left)
         }
 
         // 스페이스바 입력시
@@ -453,27 +506,93 @@ function moveArrow() {
     // }
 }
 
-// 충돌
+// 객체 좌표
+function position() {
+
+}
+
+
+// 충돌 체크
 function collision() {
     
+    var collision = false;
     var bubble = $('.bubble');
-    var stopBubble = $('.stopBubble');
+    $('.loadedBubble').addClass('movingBubble');
+    // $('.loadedBubble').reomveClass('stopBubble')
     var loadedBubble = $('.loadedBubble');
+    // var array = stopBubble.toArray();
+    var movingBubble = $('.movingBubble');
     
-    setInterval(function() {
-        var y = stopBubble.offset().top-20;
-        var y1 = loadedBubble.offset().top-20;
-        var x = stopBubble.offset().left-20;
-        var x1 = loadedBubble.offset().left-20;
+    // var a = document.getElementById('p').childNodes;
+    var stopBubble = $('.stopBubble');
 
-        var k = Math.pow(x-x1,2)+Math.pow(y-y1,2)
-        var j = Math.sqrt(k)
-		console.log((a-c))
+    var rad = 2*Math.PI*(bubbleDeg/360);    // Radian
+    var y = 358*Math.tan(rad);
+    var y2 = 121/Math.tan(rad);
+    
+    var tan = Math.tan(rad);
+    var y3 = 242/tan;
+    //     for(var attr in stopBubble) {
+    //        console.log(attr)
+    //    }
+    
+    // for(var o = 0; o<stopBubble.length; o++) {
+    //     console.log(stopBubble[o].offsetTop)
+    // }
+    // for(var i = 0; i<1000; i++) {
+        
+    //     setTimeout(function() {
+    //         console.log(movingBubble.offset().top)    
+    //     }, 1)
+    // }
+    var i = 0;
+    var check = setInterval(function() {
+        var loadedBubble = $('.loadedBubble')
+        var stopBubble = $('.stopBubble')
+        var movingBubble = $('.movingBubble')
+        movingBubble.removeClass('.stopBubble')
+            // var x1 = loadedBubble.offset().left+359;
+            // var y1 = stopBubble[0].offset().top+82;
+       
+        
+        var g;
+        var h=0;
+        // console.log(movingBubble.offset().top)
+        // obj.x = stopBubble[i].offsetLeft;
+        
+        // g= stopBubble[1].offset().left;
+        
+        console.log(stopBubble[i].offsetLeft-movingBubble.offset().left+359)
+        
+        i = i+1;
+        // var x = movingBubble.offset().top;
+        // console.log(x)
+        // console.log(movingBubble.offset().top)
+        if(false)
+            console.log('good'+h)
+        else
+            collision = false;
 
-        if(j<=39)
+        if(collision) {
+            // loadedBubble.animate().stop(launchingDelay);
             loadedBubble.animate().stop();
+            collision = true;
+        }
+        // else
+        // launchingDelay();
+        
+        // console.log('kkkkkk : '+j);        
+        
+    }, 20)
+    // check();
+// console.log(z)
+    // 재장전
+    launchingDelay();
+    // clearInterval();
+    
+}
 
-    }, 10)
+// 지연 반복
 //     (function looper (i) {
 // 	setTimeout(function() {
 //         var a = Math.abs(stopBubble.offset().top-20);
@@ -491,15 +610,6 @@ function collision() {
 // 			looper (i);
 // 	}, 10)
 // })(i);
-    
-    // if(Math.abs(a-c)==38 && Math.abs(b-d==38))
-    //     loadedBubble.stop().animate();
-
-   
-    
-}
-
-
 
 // Stage 1
 function stage_1() {
@@ -518,6 +628,7 @@ $(window).keydown(function(e){ // 어떤 키가 눌렸는지 저장
 });
 $(window).keyup(function(e){ // 눌렸던 키를 해제
     keypress[e.which.toString()] = false;
+    
 });    
 
 </script>
