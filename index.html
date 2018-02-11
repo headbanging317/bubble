@@ -690,16 +690,21 @@ function collision() {
                     collision = false;
 
                 if(collision) {
-                    console.log(h)
+                    
                     // loadedBubble.animate().stop(launchingDelay);
                     // console.log(i)
                     lastBubble = movingBubble[0];
                     
+                   
+
+
+
+
                     clly = Math.pow((lastBubble.offsetTop-stopBubble[i].offsetTop+339), 2);
                     cllx = Math.pow((lastBubble.offsetLeft-stopBubble[i].offsetLeft+101), 2);
                     var y = (Math.sqrt(clly)-340)
                     // var x = (Math.sqrt(cllx)-101)
-                    console.log(x)
+                    
                     var top1 = y - 40; 
                     // var left1 = x;
                     // console.log(y)
@@ -707,9 +712,33 @@ function collision() {
                     // console.log(lastbubble.offsetLeft);
                     // console.log(lastBubble.offsetTop-stopBubble[i].offsetTop)
                     // console.log(lastBubble)
+                    
+                    
                     movingBubble.stop()
-                    .animate({top:lastBubble.offsetTop-x-338.6}, 240);  // 붙는 거리 조정
-
+                    .animate({top:lastBubble.offsetTop-x-338.6}, 240, function() {
+                        for(var j = 0; j<stopBubble.length; j++) {
+                        var array = [];
+                        
+                        var n;
+                        var m;
+                        n = Math.pow(movingBubble.position().top-stopBubble[j].offsetTop+339, 2) + Math.pow(movingBubble.position().left-stopBubble[j].offsetLeft+101, 2)
+                        m = Math.sqrt(n)
+                        if(m<=41) {                              
+                            array.push(stopBubble[j])         
+                        }
+                        console.log(array)
+                            // array.push(stopBubble[j]);
+                            //     if(array.length>=3) {
+                            //         for(var l = 0; l<array.length; l++) {
+                            //             array[l].className += " linkedBubble"
+                            //         }
+                            //     }
+                        
+                        // 33~37
+                        }
+                        
+                    });  // 붙는 거리 조정
+                    
                     // .animate({top:lastBubble.offsetTop-top1-339.5, left:lastBubble.offsetLeft-left1-101})
 
                     
