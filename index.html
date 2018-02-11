@@ -644,7 +644,7 @@ function collision() {
         // var x1 = loadedBubble.offset().left+359;
         // var y1 = stopBubble[0].offset().top+82;
        
-        var adjust = 40;
+        
         var g;
         var h=0;
         // console.log(movingBubble.offset().top)
@@ -656,7 +656,8 @@ function collision() {
         // console.log(movingBubble.offset().top-stopBubble[0].offsetTop-81.5)
         // console.log(stopBubble[0].offsetLeft)
         // console.log(movingBubble.offset().left-stopBubble[0].offsetLeft-508)
-
+        var cllx = 0;
+        var clly = 0;
 
         try {
 
@@ -672,6 +673,7 @@ function collision() {
             for(var i = 0; i<stopBubble.length; i++) {
                 g = Math.pow(movingBubble.position().top-stopBubble[i].offsetTop+339, 2) + Math.pow(movingBubble.position().left-stopBubble[i].offsetLeft+101, 2)
                 
+                
                 h = Math.sqrt(g)
                 
                 // console.log(movingBubble.position().left+101)
@@ -679,25 +681,38 @@ function collision() {
                 // console.log(stopBubble[0].offsetTop-359)
                 var x = h - 41
                 
-                if(h<=44) {
+                if(h<=40) {
                     collision = true;
-                    // console.log(stopBubble[i].offsetTop)
+                    // console.log(stopBubble[i].offsetLeft)
                     // console.log(x)
                 }
                 else
                     collision = false;
 
                 if(collision) {
-                    
+                    console.log(h)
                     // loadedBubble.animate().stop(launchingDelay);
                     // console.log(i)
                     lastBubble = movingBubble[0];
-                    console.log('heelo'+lastBubble.offsetLeft)
+                    
+                    clly = Math.pow((lastBubble.offsetTop-stopBubble[i].offsetTop+339), 2);
+                    cllx = Math.pow((lastBubble.offsetLeft-stopBubble[i].offsetLeft+101), 2);
+                    var y = (Math.sqrt(clly)-340)
+                    // var x = (Math.sqrt(cllx)-101)
+                    console.log(x)
+                    var top1 = y - 40; 
+                    // var left1 = x;
+                    // console.log(y)
+                    // console.log('heelo'+x)
                     // console.log(lastbubble.offsetLeft);
                     // console.log(lastBubble.offsetTop-stopBubble[i].offsetTop)
-                    
+                    // console.log(lastBubble)
                     movingBubble.stop()
-                    .animate({top:lastBubble.offsetTop-x-338.6}, 240);
+                    .animate({top:lastBubble.offsetTop-x-338.6}, 240);  // 붙는 거리 조정
+
+                    // .animate({top:lastBubble.offsetTop-top1-339.5, left:lastBubble.offsetLeft-left1-101})
+
+                    
                     // console.log('hello'+(lastBubble.offsetTop-stopBubble[i].offsetTop))
                     // .animate({top:lastBubble.offsetTop-stopBubble[i].offsetTop-x, left:0});
                     
@@ -709,6 +724,7 @@ function collision() {
                     //     // console.log(stopBubble[i].offsetTop)
                     // }
                     movingBubble.removeClass('movingBubble').addClass('stopBubble')
+
                     // nearBBChk();
                     // collision = true;
                 } 
