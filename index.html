@@ -186,13 +186,13 @@ var bSpeed = 5;
 var randomBubble = Math.floor((Math.random()*4))
 var bubbleColor;
 
+var colorStatus;
 
 
 
+// $('.bubblePathRound').append('<img src="img/red.png" class="bubble stopBubble startBubble" id="test">')
+// $('.bubblePathRound').append('<img src="img/blue.png" class="bubble stopBubble startBubble" id="test2">')
 
-
-$('.bubblePathRound').append('<img src="img/red.png" class="bubble stopBubble startBubble" id="test">')
-$('.bubblePathRound').append('<img src="img/blue.png" class="bubble stopBubble startBubble" id="test2">')
 switch(randomBubble) {
     case 0:
         bubbleColor = 'blue';
@@ -208,7 +208,7 @@ switch(randomBubble) {
         break;
 }
 
-$('.bubblePathRound').append('<img src="img/'+bubbleColor+'.png" class="bubble loadedBubble" id='+bubbleColor+'>')
+$('.bubblePathRound').append('<img src="img/'+bubbleColor+'.png" class="bubble loadedBubble" id="20">')
 
 for(var k = 0; k<20; k++) {
     var randomWaitb = Math.floor((Math.random()*4))
@@ -261,27 +261,156 @@ function reload() {
     
 }
 var lastBubble;
+var stopBubbleLength;
 
-function nearBBChk() {
+var m = [];
+var memory = [];
+
+function nearBBChk(i, lastBubble) {
+    var g;
+    var h;
+    var a = 1;
     var stopBubble = $('.stopBubble');
+    // var lastBubble = $('.lastBubble');
+    // var waitBubble = $('.waitBubble')
+    var length = stopBubble.length;
+    var tBubble = stopBubble[stopBubbleLength]
+    var expBubble = $('.expBubble');
+    // console.log(stopBubble[i]);
+    // console.log(lastBubble)
     
-    // for(var i = 0; i<stopBubble.length; i++) {
-    //     console.log(i+'번째 offsetTop 은 '+stopBubble[i].offsetTop)
-    //     for(var j = 0; j<stopBubble.length-1; j++) {
+    g = Math.pow(lastBubble.offsetTop-stopBubble[i].offsetTop, 2) + Math.pow(lastBubble.offsetLeft-stopBubble[i].offsetLeft, 2)
+    h = Math.sqrt(g)
+
+    //////////////////////////////////////////////////////
+    if(stopBubble[i].outerHTML[14]==lastBubble.outerHTML[14]) {
+        // console.log(lastBubble.)
+        // if(stopBubble[i].className = 'exReady')
+        //     console.log('빵')
+        // console.log(stopBubble[i].className.indexOf("exReady")==7)
+        console.log('색깔 같으면')
+        if(stopBubble[i].className.indexOf("linked")==7) {
+            console.log('3개맞는 부분')
+            // console.log(stopBubble[i].className.indexOf("linked"))
+            stopBubble[i].className += " expBubble";
+            lastBubble.className = stopBubble[i].className;
+ 
+        } else {
+            memory.push(stopBubble[i].id)
+            console.log('일단 2개 맞고')
+            stopBubble[i].className += " linked"+i;
+            lastBubble.className = stopBubble[i].className;
+        }
         
+    }
+    console.log(memory)
+    ////////////////////////////////////////////////////
+   
+    var u;
+    var array = {};
+    // console.log(i)
+    // console.log(stopBubble[i])
+    // console.log(lastBubble)
+
+    // m.push(stopBubble[i])
+    // m.push(lastbubble)
+    
+    // waitBubble.addClass('heelo')
+
+    // console.log(m)
+    // console.log(stopBubble[1].offsetTop)
+
+    // console.log('??')
+    // console.log(length)
+    // 처음에는 0과 라스트 버블을 비교 두번째 부터는 1(라스트) 와 2를 비교
+    // for(var i = 0; i<stopBubble.length; i++) {
+    //     for(var j = 0; j<stopBubble.length; j++) {
+    //         var g = Math.pow(stopBubble[1].offsetTop-stopBubble[j].offsetTop, 2) + Math.pow(stopBubble[1].offsetLeft-stopBubble[j].offsetLeft, 2)
+    //         var h = Math.sqrt(g)
+    //         if(h<=41) {
+    //             m.push(stopBubble[i])
+    //         }
     //     }
+    // }
+    // console.log(m)
+    // for(var i = 0; i<stopBubble.length-1; i++) {
+    //     for(var j = i+1; j<stopBubble.length-i-1; i++) {
+
+    //     }
+    // }
+    // if(stopBubble[0].outerHTML[14]==stopBubble[1].outerHTML[14]) {
+    //     console.log('첫번째랑 두번빼 같은색깔')
+    // }
+
+    // if(stopBubble[1].outerHTML[14]==stopBubbe[2].outerHTML[14]) {
+    //     console.log('같은 색깔~')
+    // }
+  
+    // console.log(stopBubble[length])
+    // if(stopBubble[0].outerHTML[14]==stopBubble[1].outerHTML[14]) {
+    //     console.log('일단')
+    // }
+
+    // console.log(stopBubble[1])
+    // console.log(stopBubble[1])
+    // console.log(stopBubble[stopBubble.length])
+    // if(lastBubble[14]==stopBubble)
+
+
+    // console.log(m)
+    
+
+ 
+
+    //     for(var j = i+1; j<stopBubble.length-1-j; j++) {
+    //         // if(stopBubble[i].outerHTML[14]==stopBubble[j].outerHTML[14]) {
+    //         //    console.log('같은색깔이 어딘가에 있어요')
+    //         // }
+            
+    //     }
+
+    //     // n = Math.pow(lastBubble.offsetTop-stopBubble[i].offsetTop, 2) + Math.pow(lastBubble.offsetLeft-stopBubble[i].offsetLeft, 2)
+
+    //     // m = Math.sqrt(n)
+
+    //     // this = lastBubble??
+
+
+    //     // console.log(this)
+    //     // if(u<=41 && stopBubble[i].outerHTML[14] == lastBubble.outerHTML[14]) {
+    //     //     var linkedBubble = $('.linkedBubble')
+    //     //     for(var j = 0; j<stopBubble.length; j++) {
+    //     //         console.log('같아요')
+    //     //         // if(stopBubble[j].outerHTML[14] == lastBubble.outerHTML[14]) {
+                    
+                    
+    //     //         //     // stopBubble[j].addClass('linked');
+    //     //         //     // lastBubble.addClass('linked');
+    //     //         //     // console.log('linked');
+
+    //     //         // }
+    //     //     }
+    //     //     // array.push(stopBubble[i])
+    //     //     // console.log(stopBubble[i])
+    //     // }
+    //     // if(m[j]<=41) {
+    //     //     array.push(m[j])
+    //     // }
     // }
 
     
-    // console.log(lastBubble.offsetTop)
-    
+    // for(a in m) {
+    //     array.push(m[a])
+    //     // console.log(m[a])
+    // }
+    // RGYB
     
 }
 
 function bubbleClassChange() {
     var movingBubble = $('.movingBubble');
     movingBubble.removeClass().addClass('stopBubble')
-    nearBBChk();
+    // nearBBChk();
 }
 
 
@@ -295,12 +424,25 @@ var keypress={};
 var input = $('#delayInput');
 
 function bubbleExplosion() {
+    var expBubble = $('.expBubble')
     var stopBubble = $('.stopBubble');
-    var allBubble = [];
+    var length;
 
-    for(var i =0; i<stopBubble.length; i++) {
-        allBubble.push(stopBubble[i].outerHTML)
-    }
+    for(var i = 0; i<20; i++) {
+        length = $('.linked'+i).length
+        if(length>=3) {
+            $('.linked'+i).remove();
+        }
+    }    
+
+    console.log(expBubble[1])
+    // for(var i = 0; i<2; i++) {
+    //     for(var j = 0; j<stopBubble.length-1; j++) {
+    //         expBubble[i]
+    //     }
+    // }
+    // expBubble.remove();
+    
 
 }
 
@@ -643,7 +785,7 @@ function collision() {
         movingBubble.removeClass('.stopBubble')
         // var x1 = loadedBubble.offset().left+359;
         // var y1 = stopBubble[0].offset().top+82;
-       
+        var colorState=false;
         
         var g;
         var h=0;
@@ -683,6 +825,7 @@ function collision() {
                 
                 if(h<=40) {
                     collision = true;
+                    
                     // console.log(stopBubble[i].offsetLeft)
                     // console.log(x)
                 }
@@ -694,12 +837,9 @@ function collision() {
                     // loadedBubble.animate().stop(launchingDelay);
                     // console.log(i)
                     lastBubble = movingBubble[0];
-                    
+                    // console.log($('.waitBubble'))
+                    // console.log()
                    
-
-
-
-
                     clly = Math.pow((lastBubble.offsetTop-stopBubble[i].offsetTop+339), 2);
                     cllx = Math.pow((lastBubble.offsetLeft-stopBubble[i].offsetLeft+101), 2);
                     var y = (Math.sqrt(clly)-340)
@@ -717,58 +857,25 @@ function collision() {
                     
                     
                     movingBubble.stop()
-                    .animate({top:lastBubble.offsetTop-x-338.6},240, function() {
-                        var m = [];
-                        var u;
-                        // console.log(lastBubble.offsetTop)
-                        for(var j = 0; j<stopBubble.length; j++) {
-                            
-                        
-                        n = Math.pow(lastBubble.offsetTop-stopBubble[j].offsetTop, 2) + Math.pow(lastBubble.offsetLeft-stopBubble[j].offsetLeft, 2)
-                        m = Math.sqrt(n)
-                        // console.log(m)
-                        // console.log(Math.sqrt(n)+'    '+j)
-                        array.push(m)
-                        if(m<=41) {                             
-                                
-                        }
-                        // console.log(array)
-                            // array.push(stopBubble[j]);
-                            //     if(array.length>=3) {
-                            //         for(var l = 0; l<array.length; l++) {
-                            //             array[l].className += " linkedBubble"
-                            //         }
-                            //     }
-                        
-                        // 33~37
-                        }
-                        console.log(array)
-                    });  // 붙는 거리 조정
-                    // console.log(m)
-
-                    // .animate({top:lastBubble.offsetTop-top1-339.5, left:lastBubble.offsetLeft-left1-101})
-
-                    
-                    // console.log('hello'+(lastBubble.offsetTop-stopBubble[i].offsetTop))
-                    // .animate({top:lastBubble.offsetTop-stopBubble[i].offsetTop-x, left:0});
-                    
-                    
-                    // console.log('offsetTop : '+lastBubble.offsetTop)
-                    // for(var i = 0; i<stopBubble.length; i++) {
-                    //     console.log(lastBubble.offsetTop-stopBubble[i].offsetTop)
-                        
-                    //     // console.log(stopBubble[i].offsetTop)
+                    .animate({top:lastBubble.offsetTop-x-338.6},240, nearBBChk(i, lastBubble));  // 붙는 거리 조정
+                    // if(lastBubble.outerHTML[14]==stopBubble[i].outerHTML[14]) {
+                    //     lastBubble.addClass('linked');
+                    //     stopBubble[i].addlass('linked');
                     // }
+                    
                     movingBubble.removeClass('movingBubble').addClass('stopBubble')
 
                     // nearBBChk();
                     // collision = true;
-                } 
+                } else if(colorState) {
+                    console.log('hello')
+                }
             }
             // console.log(collision)
             
         } catch(e) {
-            console.log(e.message)
+            return;
+            // console.log(e.message)
             // return;
         }
     }, 10)
@@ -809,7 +916,7 @@ angleTest()
 // setInterval(lunch, 2000
 // setTimeout(lunch, 1000);
 setInterval(moveArrow, 10)
-
+setInterval(bubbleExplosion, 100)
 $(window).keydown(function(e){ // 어떤 키가 눌렸는지 저장 
     keypress[e.which.toString()] = true;
 });
