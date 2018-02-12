@@ -634,7 +634,7 @@ function collision() {
     //     }, 1)
     // }
     var i = 0;
-    
+    var array = [];
     setInterval(function() {
         var loadedBubble = $('.loadedBubble')
         var stopBubble = $('.stopBubble')
@@ -713,20 +713,26 @@ function collision() {
                     // console.log(lastBubble.offsetTop-stopBubble[i].offsetTop)
                     // console.log(lastBubble)
                     
+                    var n;
+                    
                     
                     movingBubble.stop()
-                    .animate({top:lastBubble.offsetTop-x-338.6}, 240, function() {
+                    .animate({top:lastBubble.offsetTop-x-338.6},240, function() {
+                        var m = [];
+                        var u;
+                        // console.log(lastBubble.offsetTop)
                         for(var j = 0; j<stopBubble.length; j++) {
-                        var array = [];
+                            
                         
-                        var n;
-                        var m;
-                        n = Math.pow(movingBubble.position().top-stopBubble[j].offsetTop+339, 2) + Math.pow(movingBubble.position().left-stopBubble[j].offsetLeft+101, 2)
+                        n = Math.pow(lastBubble.offsetTop-stopBubble[j].offsetTop, 2) + Math.pow(lastBubble.offsetLeft-stopBubble[j].offsetLeft, 2)
                         m = Math.sqrt(n)
-                        if(m<=41) {                              
-                            array.push(stopBubble[j])         
+                        // console.log(m)
+                        // console.log(Math.sqrt(n)+'    '+j)
+                        array.push(m)
+                        if(m<=41) {                             
+                                
                         }
-                        console.log(array)
+                        // console.log(array)
                             // array.push(stopBubble[j]);
                             //     if(array.length>=3) {
                             //         for(var l = 0; l<array.length; l++) {
@@ -736,9 +742,10 @@ function collision() {
                         
                         // 33~37
                         }
-                        
+                        console.log(array)
                     });  // 붙는 거리 조정
-                    
+                    // console.log(m)
+
                     // .animate({top:lastBubble.offsetTop-top1-339.5, left:lastBubble.offsetLeft-left1-101})
 
                     
