@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <style>
+        
         .start {
             position: relative;
             margin-left: 0;
@@ -22,6 +23,8 @@
             margin-top: 52.5px;
             width: 280px;
             height: 429.5px;
+            /* border: 1px solid yellow; */
+            
             z-index: 3;
         }
         .bubblePathRound {
@@ -30,6 +33,7 @@
             height:389.5px;
             margin-left: 20px;
             margin-top: 20px;
+            /* border: 1px rgb(14, 231, 61) solid; */
             z-index: 5;
         }
         .wrapper{
@@ -39,13 +43,20 @@
 			border: 1px solid red;
 			position: relative;
 			margin: 0 auto;
-			overflow: hidden;  
+			overflow: hidden;
+            
 		}
         .arrow {
+            /* margin: auto; */
+            /* margin-top: 387px; */
+            /* margin-left: 332.5px; */
+
             margin-top: 333px;
             margin-left: 122px;
             position: absolute;
             z-index: 3;
+            /* transform: rotate(90deg); */
+            
         }
         .bubble {
             margin-top: 585px;
@@ -66,6 +77,25 @@
             width: 100%;
             height: 100%;
         }
+        #blue {
+            /* width: 40px;
+            height: 40px; */
+            /* margin-top: 338px;
+            margin-left: 100.5px; */
+            z-index: 2;
+            /* visibility: hidden; */
+        }
+        #red {
+            z-index: 2;
+        }
+
+        #yellow {
+            z-index: 2;
+        }
+        #green {
+            z-index: 2;
+        }
+
         .stopBubble {
             width: 40px;
             height: 40px;
@@ -82,6 +112,7 @@
             margin-left: 100.5px;
             z-index: 2;
             position: absolute;
+            /* transition: all, 0.5s; */
         }
         .waitBubble {
             width: 40px;
@@ -90,6 +121,8 @@
             margin-left: 200px;
             z-index: 2;
             position: absolute;
+            /* top = 12
+            left 99.5 */
         }
         #test {
             width: 40px;
@@ -134,6 +167,7 @@
             margin-left: 355px;
             width: 400px;
             height: 30px;
+            /* border: 1px  black; */
             border: skyblue;
         }
         #deadLine {
@@ -142,6 +176,7 @@
             position: absolute;
             border: 1px solid white;
             width: 280px;
+            /* height: 1px; */
             z-index: 15;
         }
         
@@ -154,6 +189,8 @@
             <div class="bubblePathRound"><div id="deadLine"></div></div>
         </div>
         <img src="img/ATTRACT1.png" alt="" class="attr">
+        <!-- <img src="img/blueLine4.png" alt="" class="line"> -->
+        <!-- <div class="lunchBubble"></div> -->
         <input type="text" id="delayInput" class="">
     </div>
     <table id="table" border="1">
@@ -210,6 +247,7 @@ function init() {
     var timeInterval = setInterval(time, 1000);
 
 
+    // setTimeout(gameOver, 3000)
 }
 
 
@@ -292,6 +330,7 @@ function reload() {
         
         $('#'+i).removeClass().addClass('loadedBubble').addClass('bubble').css('top', '0').css('left', '0')
         i--;
+        // console.log(i)
         input.focus();
     })
 
@@ -302,15 +341,23 @@ function reload() {
 var lastBubble;
 var stopBubbleLength;
 
+// setInterval(function() {
+//      var bubble = $('.stopBubble')
+//      console.log(bubble.className)
+//    }, 500)
 function nearBBChk(i, lastBubble) {
     
     var g;
     var h;
     var a = 1;
     var stopBubble = $('.stopBubble');
+    // var lastBubble = $('.lastBubble');
+    // var waitBubble = $('.waitBubble')
     var length = stopBubble.length;
+    var tBubble = stopBubble[stopBubbleLength]
     var expBubble = $('.expBubble');
     
+    // console.log('lastBubble'+lastBubble.offsetTop)  // 210
         
     if(lastBubble.offsetTop>=200) {
         gameOver();
@@ -318,19 +365,38 @@ function nearBBChk(i, lastBubble) {
 
     g = Math.pow(lastBubble.offsetTop-stopBubble[i].offsetTop, 2) + Math.pow(lastBubble.offsetLeft-stopBubble[i].offsetLeft, 2);
     h = Math.sqrt(g);
-
+    // console.log('받아온 i 는'+i);
+    // console.log('받아온 lastBubble은'+lastBubble)
+    //     console.log('현재 stopBubble은'+stopBubble[o])
     setTimeout(function() {
         if(stopBubble[i].outerHTML[14]==lastBubble.outerHTML[14]) {
-       
-            if(stopBubble[i].className.indexOf("linked")==18) {
 
-                lastBubble.className += ' linked '+stopBubble[i].id;
+        // console.log(lastBubble.)
+        // if(stopBubble[i].className = 'exReady')
+        //     console.log('빵')
+        // console.log(stopBubble[i].className.indexOf("exReady")==7)
+        // console.log('색깔 같으면')
             
+            if(stopBubble[i].className.indexOf("linked")==18) {
+                // console.log(stopBubble[i].className.indexOf("linked"))
+                // stopBubble[i].className += " expBubble";
+                
+                lastBubble.className += ' linked '+stopBubble[i].id;
+                // lastBubble.removeClass('linked'+i);
+                // stopBubble[i].removeClass('linked'+i)
+                
+                
+                // console.log(stopBubble[i].className)
+                // console.log(lastBubble.className)
+    
             } else {
-
+                // memory.push(stopBubble[i].id)
+                // console.log(stopBubble[i].className)
+                // console.log(lastBubble.className)
+                
                 stopBubble[i].className += " linked "+lastBubble.id;
+                // lastBubble.className = stopBubble[i].className;
                 lastBubble.className += " linked "+lastBubble.id;
-
             }
         }
     }, 100)
@@ -343,6 +409,7 @@ function nearBBChk(i, lastBubble) {
 function bubbleClassChange() {
     var movingBubble = $('.movingBubble');
     movingBubble.removeClass().addClass('stopBubble').addClass('bubble')
+    // nearBBChk();
 }
 
 
@@ -383,159 +450,196 @@ function bubbleExplosion() {
 
 
 input.keydown(function(e) {
-
-
-    var loadedBubble = $('.loadedBubble');
-    var movingBubble = $('.movingBubble');
-
-
-    var rad = 2*Math.PI*(bubbleDeg/360);    // Radian
-    var y = 358*Math.tan(rad);
-    var y2 = 121/Math.tan(rad);
-    var tan = Math.tan(rad);
-    var y3 = 242/tan;
-    
-    // space == 32
-    if(e.keyCode==229) {
-        // console.log(keyFlag)
-        input.blur();
-    }
-
-    // 스페이스바를 눌렀을 떄;
-    if(e.keyCode==32) {
-
-        $('#leftBb').text(i);
-
-        loadedBubble.addClass('movingBubble').addClass('bubble')
-
-        // 제어권을 잃는다
-        input.blur();
+    // 모든 버블
+    var bubbleArray = {};
+    // console.log(e.keyCode)
+        var loadedBubble = $('.loadedBubble');
+        var movingBubble = $('.movingBubble');
+        // var a = document.getElementById('p').childNodes;
+        // var startTime = new Date('1/1/1990');
+        // var startMsec = startTime.getMilliseconds();
+        // startTime.setTime(5000000);
+        // var elapsed = (startTime.getTime() - startMsec) / 1000; 
+        // console.log(elapsed)
+        // var waitBubble = $('.waitBubble')
         
-        
-        var bounce; // 튕기는 횟수
+        // bubbleArray.x = waitBubble[i].x
+        // console.log(bubbleArray.x)
+        // console.log(bubbleArray)
 
-        // 각도에 따른 팅기는 횟수
-        if(bubbleDeg>=0 && bubbleDeg<18.63 || bubbleDeg<0 && bubbleDeg>=-18.63) bounce = 0;
-        else if(bubbleDeg>=18.63 && bubbleDeg<45.32 || bubbleDeg<-18.63 && bubbleDeg>=-45.32) bounce = 1;
-        else if(bubbleDeg>=45.32 && bubbleDeg<59.32 || bubbleDeg<-45.32 && bubbleDeg>=-59.32) bounce = 2;
-        else if(bubbleDeg>=59.32 && bubbleDeg<67.03 || bubbleDeg<-59.32 && bubbleDeg>=-67.03) bounce = 3;
-        else if(bubbleDeg>=67.03 && bubbleDeg<71.79 || bubbleDeg<-67.03 && bubbleDeg>=-71.79) bounce = 4;
-
-        // 양수 음수 상태, 판별
-        var status = false; 
-        if(bubbleDeg>=0) status=true;  
-        else status = false;
+        var rad = 2*Math.PI*(bubbleDeg/360);    // Radian
+        var y = 358*Math.tan(rad);
+        var y2 = 121/Math.tan(rad);
+        // console.log(bubbleDeg)
+        var tan = Math.tan(rad);
+        var y3 = 242/tan;
         
-        
-        if(status) {    // 각도가 양수일 때
-            switch(bounce) {
+        // space == 32
+        if(e.keyCode==229) {
+            // console.log(keyFlag)
+            input.blur();
+        }
 
-                case 0: // 0번 팅길때
-                    loadedBubble.animate({top:-359, left:tan*359}, bubbleClassChange)
-                    collision();    // 충돌될때 멈추기
-                    break;
+        if(e.keyCode==32) {
+            // clearInterval(check);
+
+            $('#leftBb').text(i)
+            // ???
+            loadedBubble.addClass('movingBubble').addClass('bubble')
+            
+            // 제어권을 잃는다
+            input.blur();
+            
+            
+            // keyFlag=true;
+            // console.log(keyFlag)
+            var bounce; // 튕기는 횟수
+            // 각도에 따른 팅기는 횟수
+            if(bubbleDeg>=0 && bubbleDeg<18.63 || bubbleDeg<0 && bubbleDeg>=-18.63) bounce = 0;
+            else if(bubbleDeg>=18.63 && bubbleDeg<45.32 || bubbleDeg<-18.63 && bubbleDeg>=-45.32) bounce = 1;
+            else if(bubbleDeg>=45.32 && bubbleDeg<59.32 || bubbleDeg<-45.32 && bubbleDeg>=-59.32) bounce = 2;
+            else if(bubbleDeg>=59.32 && bubbleDeg<67.03 || bubbleDeg<-59.32 && bubbleDeg>=-67.03) bounce = 3;
+            else if(bubbleDeg>=67.03 && bubbleDeg<71.79 || bubbleDeg<-67.03 && bubbleDeg>=-71.79) bounce = 4;
+
+            // 양수 음수 상태, 판별
+            var status = false; 
+            if(bubbleDeg>=0) status=true;  
+            else status = false;
+            
+            
+            // var b = $('.bubblePathRound').children().last();    
+            // var c = $('.bubblePathRound').children().first(); // loadedBubble
+            
+            
+            if(status) {    // 각도가 양수일 때
+                switch(bounce) {
+
+                    case 0: // 0번 팅길때
+                        loadedBubble.animate({top:-359, left:tan*359}, bubbleClassChange)
+                        collision();    // 충돌될때 멈추기
+                        
+                        // launchingDelay();
+                        break;
+                        
+                    case 1: // 1번 팅길때
+                        loadedBubble.animate({top:-y2, left:121}, function() {
+                            loadedBubble.animate({top:-359, left:121-((359-y2)*tan)}, bubbleClassChange)
+                        })
+                        // loadedBubble.animate({top:-y2, left:121}).animate({top:-359, left:121-((359-y2)*tan)}, bubbleClassChange)
+                        console.log(y2)
+                        collision();
+                        // launchingDelay();
+                        break;
+
+                    case 2: // 2번 팅길 때
+                        // loadedBubble.animate({top:-y2, left:121}).animate({top:-3*y2, left:-121}).animate({top:-359, left:-(121-((359-(3*y2))*tan))}, bubbleClassChange)
+                        loadedBubble.animate({top:-y2, left:121}, function() {
+                            loadedBubble.animate({top:-3*y2, left:-121}, function() {
+                                loadedBubble.animate({top:-359, left:-(121-((359-(3*y2))*tan))}, bubbleClassChange)
+                            })
+                        })
                     
-                case 1: // 1번 팅길때
-                    loadedBubble.animate({top:-y2, left:121}, function() {
-                        loadedBubble.animate({top:-359, left:121-((359-y2)*tan)}, bubbleClassChange)
-                    })
-                    collision();
-                    break;
+                        collision();
+                        break;
 
-                case 2: // 2번 팅길 때
-                    loadedBubble.animate({top:-y2, left:121}, function() {
-                        loadedBubble.animate({top:-3*y2, left:-121}, function() {
-                            loadedBubble.animate({top:-359, left:-(121-((359-(3*y2))*tan))}, bubbleClassChange)
-                        })
-                    })
-                    collision();
-                    break;
+                    case 3: // 3번 팅길 때
+                        // loadedBubble.animate({top:-y2, left:121}).animate({top:-3*y2, left:-121}).animate({top:-5*y2, left:121}).animate({top:-359, left:121-((359-(5*y2))*tan)}, bubbleClassChange)
 
-                case 3: // 3번 팅길 때
-                    loadedBubble.animate({top:-y2, left:121}, function() {
-                        loadedBubble.animate({top:-3*y2, left:-121}, function() {
-                            loadedBubble.animate({top:-5*y2, left:121}, function() {
-                                loadedBubble.animate({top:-359, left:121-((359-(5*y2))*tan)}, bubbleClassChange)
-                            })
-                        })
-                    })
-                    collision();
-                    break;
-
-                case 4: // 4번 팅길 때
-                    loadedBubble.animate({top:-y2, left:121}, function() {
-                        loadedBubble.animate({top:-3*y2, left:-121}, function() {
-                            loadedBubble.animate({top:-5*y2, left:121}, function() {
-                                loadedBubble.animate({top:-7*y2, left:-121}, function() {
-                                    loadedBubble.animate({top:-359, left:-(121-((359-(7*y2))*tan))}, bubbleClassChange)
+                        loadedBubble.animate({top:-y2, left:121}, function() {
+                            loadedBubble.animate({top:-3*y2, left:-121}, function() {
+                                loadedBubble.animate({top:-5*y2, left:121}, function() {
+                                    loadedBubble.animate({top:-359, left:121-((359-(5*y2))*tan)}, bubbleClassChange)
                                 })
                             })
                         })
-                    })
-                    collision();
-                    break;
-            }
 
-        } else {    // 각도가 음수 일때
-            switch(bounce) {
+                        collision();
+                        break;
+                    case 4: // 4번 팅길 때
+                        // loadedBubble.animate({top:-y2, left:121}).animate({top:-3*y2, left:-121}).animate({top:-5*y2, left:121}).animate({top:-7*y2, left:-121}).animate({top:-359, left:-(121-((359-(7*y2))*tan))}, bubbleClassChange)
 
-                case 0: // 0번 팅길때
-                    loadedBubble.animate({top:-359, left:tan*359}, bubbleClassChange)
-                    collision();
-                    break;
-
-                case 1: // 1번 팅길때
-                    loadedBubble.animate({top:y2, left:-121}, function() {
-                        loadedBubble.animate({top:-359, left:-(121+((359+y2)*tan))}, bubbleClassChange)
-                    })
-                    collision();
-                    break;
-
-                case 2: // 2번 팅길 때
-                    loadedBubble.animate({top:y2, left:-121}, function() {
-                        loadedBubble.animate({top:3*y2, left:121}, function() {
-                            loadedBubble.animate({top:-359, left:(121+((359+(3*y2))*tan))}, bubbleClassChange)
-                        })
-                    })
-                    collision();
-                    break;
-
-                case 3: // 3번 팅길 때
-                    loadedBubble.animate({top:y2, left:-121}, function() {
-                        loadedBubble.animate({top:3*y2, left:121}, function() {
-                            loadedBubble.animate({top:5*y2, left:-121}, function() {
-                                loadedBubble.animate({top:-359, left:-(121+((359+(5*y2))*tan))}, bubbleClassChange)
-                            })
-                        })
-                    })
-                    collision();
-                    break;
-
-                case 4: // 4번 팅길 때
-                    loadedBubble.animate({top:y2, left:-121}, function() {
-                        loadedBubble.animate({top:3*y2, left:121}, function() {
-                            loadedBubble.animate({top:5*y2, left:-121}, function() {
-                                loadedBubble.animate({top:7*y2, left:121}, function() {
-                                    loadedBubble.animate({top:-359, left:(121+((359+(7*y2))*tan))}, bubbleClassChange)
+                        loadedBubble.animate({top:-y2, left:121}, function() {
+                            loadedBubble.animate({top:-3*y2, left:-121}, function() {
+                                loadedBubble.animate({top:-5*y2, left:121}, function() {
+                                    loadedBubble.animate({top:-7*y2, left:-121}, function() {
+                                        loadedBubble.animate({top:-359, left:-(121-((359-(7*y2))*tan))}, bubbleClassChange)
+                                    })
                                 })
                             })
                         })
-                    })
-                    collision();
-                    break;
-            }
-        } 
-    }
+                        collision();
+                        break;
+                }
+
+            } else {    // 각도가 음수 일때
+                switch(bounce) {
+
+                    case 0: // 0번 팅길때
+                        loadedBubble.animate({top:-359, left:tan*359}, bubbleClassChange)
+                        collision();
+                        break;
+
+                    case 1: // 1번 팅길때
+                        // loadedBubble.animate({top:y2, left:-121}).animate({top:-359, left:-(121+((359+y2)*tan))}, bubbleClassChange)
+
+                        loadedBubble.animate({top:y2, left:-121}, function() {
+                            loadedBubble.animate({top:-359, left:-(121+((359+y2)*tan))}, bubbleClassChange)
+                        })
+                        collision();
+                        break;
+
+                    case 2: // 2번 팅길 때
+                        // loadedBubble.animate({top:y2, left:-121}).animate({top:3*y2, left:121}).animate({top:-359, left:(121+((359+(3*y2))*tan))}, bubbleClassChange)
+
+                        loadedBubble.animate({top:y2, left:-121}, function() {
+                            loadedBubble.animate({top:3*y2, left:121}, function() {
+                                loadedBubble.animate({top:-359, left:(121+((359+(3*y2))*tan))}, bubbleClassChange)
+                            })
+                        })
+                        collision();
+                        break;
+
+                    case 3: // 3번 팅길 때
+                        // loadedBubble.animate({top:y2, left:-121}).animate({top:3*y2, left:121}).animate({top:5*y2, left:-121}).animate({top:-359, left:-(121+((359+(5*y2))*tan))}, bubbleClassChange)
+
+                        loadedBubble.animate({top:y2, left:-121}, function() {
+                            loadedBubble.animate({top:3*y2, left:121}, function() {
+                                loadedBubble.animate({top:5*y2, left:-121}, function() {
+                                    loadedBubble.animate({top:-359, left:-(121+((359+(5*y2))*tan))}, bubbleClassChange)
+                                })
+                            })
+                        })
+                        collision();
+                        break;
+
+                    case 4: // 4번 팅길 때
+                        // loadedBubble.animate({top:y2, left:-121})
+                        // loadedBubble.animate({top:y2, left:-121}).animate({top:3*y2, left:121}).animate({top:5*y2, left:-121}).animate({top:7*y2, left:121}).animate({top:-359, left:-(121+((359+(7*y2))*tan))}, bubbleClassChange)
+
+                        loadedBubble.animate({top:y2, left:-121}, function() {
+                            loadedBubble.animate({top:3*y2, left:121}, function() {
+                                loadedBubble.animate({top:5*y2, left:-121}, function() {
+                                    loadedBubble.animate({top:7*y2, left:121}, function() {
+                                        loadedBubble.animate({top:-359, left:(121+((359+(7*y2))*tan))}, bubbleClassChange)
+                                    })
+                                })
+                            })
+                        })
+                        collision();
+                        break;
+                }
+            } 
+        }
 })
 
 
 function gameOver() {
 
+    
+    
     score = second * count;
     $('#score').text(score)
-
     input.remove();
-
     $('.wrapper').append('<img src="img/restartbtn.png" class="" id="restartBtn" >');
     
     $('#restartBtn').click(function() {
@@ -619,6 +723,7 @@ function collision() {
     var loadedBubble = $('.loadedBubble');
     var movingBubble = $('.movingBubble');
     
+    // var a = document.getElementById('p').childNodes;
     var stopBubble = $('.stopBubble');
 
     var rad = 2*Math.PI*(bubbleDeg/360);    // Radian
@@ -653,59 +758,93 @@ function collision() {
             else
                 input.focus();
 
-
+            //
             for(var i = 0; i<stopBubble.length; i++) {
                 g = Math.pow(movingBubble.position().top-stopBubble[i].offsetTop+339, 2) + Math.pow(movingBubble.position().left-stopBubble[i].offsetLeft+101, 2)
                 
                 
                 h = Math.sqrt(g)
-
+                
+                // console.log(movingBubble.position().left+101)
+                // console.log(movingBubble.position().top+339)
+                // console.log(stopBubble[0].offsetTop-359)
                 var x = h - 41
                 
-                if(h<=40)
+                if(h<=40) {
                     collision = true;
+                    
+                    // console.log(stopBubble[i].offsetLeft)
+                    // console.log(x)
+                }
                 else
                     collision = false;
 
-
                 if(collision) {
                     
-
+                    // loadedBubble.animate().stop(launchingDelay);
+                    // console.log(i)
                     lastBubble = movingBubble[0];
-
+                    // console.log($('.waitBubble'))
+                    // console.log()
                    
                     clly = Math.pow((lastBubble.offsetTop-stopBubble[i].offsetTop+339), 2);
                     cllx = Math.pow((lastBubble.offsetLeft-stopBubble[i].offsetLeft+101), 2);
                     var y = (Math.sqrt(clly)-340)
-               
+                    // var x = (Math.sqrt(cllx)-101)
                     
                     var top1 = y - 40;
-
+                    // var left1 = x;
+                    // console.log(y)
+                    // console.log('heelo'+x)
+                    // console.log(lastbubble.offsetLeft);
+                    // console.log(lastBubble.offsetTop-stopBubble[i].offsetTop)
+                    // console.log(lastBubble)
+                    
                     var n;
                     
                     console.log(i)
                     movingBubble.stop().animate({top:lastBubble.offsetTop-x-338.6},240, nearBBChk(i, lastBubble));  // 붙는 거리 조정;
                     
+
+                    // if(lastBubble.outerHTML[14]==stopBubble[i].outerHTML[14]) {
+                    //     lastBubble.addClass('linked');
+                    //     stopBubble[i].addlass('linked');
+                    // }
                     movingBubble.removeClass('movingBubble').addClass('stopBubble')
-                } 
-            } 
+                    // .addClass('attached')
+                  
+
+                    // nearBBChk();
+                    // collision = true;
+                } else if(colorState) {
+                    console.log('hello')
+                }
+            }
+            // console.log(collision)
+            
         } catch(e) {
             return;
+            // console.log(e.message)
+            // return;
         }
     }, 10)
 
     // 재장전
     reload();
-
+    // clearInterval();
+    
 }
 
 
 
 angleTest();
+// lunch();
+// setInterval(lunch, 2000
+// setTimeout(lunch, 1000);
 
 setInterval(moveArrow, 10);
 setInterval(bubbleExplosion, 100);
-setTimeout(gameOver, 60750);
+// setTimeout(gameOver, 6750);
 
 $(window).keydown(function(e){ // 어떤 키가 눌렸는지 저장 
     keypress[e.which.toString()] = true;
