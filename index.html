@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Bubble</title>
     <style>
         .start {
             position: relative;
@@ -124,14 +124,14 @@
         }
         #restartBtn {
             position: absolute;
-            margin-top: 130px;
+            margin-top: 125px;
             margin-left: 60px;
             z-index: 10;
         }
         #table {
             position: absolute;
-            margin-top: 15px;
-            margin-left: 355px;
+            left: 50%;
+            margin-left: -200px;
             width: 400px;
             height: 30px;
             border: skyblue;
@@ -174,13 +174,17 @@
 <script src="jquery-3.2.0.js"></script>
 <script>
 
+
 $(document).ready(()=> {
     $('.wrapper').append('<img src="img/startbtn.png" class="" id="startBtn" >')
     $('#startBtn').click(init)
 })
 
 
+// 초기화
 function init() {
+    var audio = new Audio('sound/puzzlebobble.mp3')
+    audio.play();
 
     $('#startBtn').remove();
     $('#delayInput').focus();
@@ -213,10 +217,7 @@ function init() {
 }
 
 
-
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
 $('body').click(function() {
     input.focus();
@@ -225,7 +226,6 @@ $('body').click(function() {
 //  1초마다 second 감소
 var time = function() {
     second -= 1;
-    console.log(second)
     $('#leftTime').text(second)
 }
     
@@ -247,8 +247,6 @@ var keypress={}; // 입력된 키를 담아둘 오브젝트
 var second = 60; // 남은 시간
 
 var bubbleDeg = 0; // 버블 각도
-
-var nx = 0;
 
 var bubbleColor; // 버블 색깔
 
@@ -286,32 +284,31 @@ function reload() {
             this.removeClass('loadedBubble')
     }
    
-
+    // waitBubble이 loadedBubble자리로 가는 애네미에션
     $('#'+i).animate({top:-12, left:-99.5}, function() {
 
-        
         $('#'+i).removeClass().addClass('loadedBubble').addClass('bubble').css('top', '0').css('left', '0')
         i--;
         input.focus();
+
     })
 
-    // 100번 부터 loadedBubble이 발사되면 차례대로 loadedBubble로 animate
+
     loadedBubble.removeClass('loadedBubble');
     
 }
 var lastBubble;
 var stopBubbleLength;
 
+
+// 충돌 한 후 근처 버블 체크
 function nearBBChk(i, lastBubble) {
     
-    var g;
-    var h;
-    var a = 1;
+
     var stopBubble = $('.stopBubble');
     var length = stopBubble.length;
-    var expBubble = $('.expBubble');
     
-        
+    // 충돌한후 버블의 위치가 하얀색 선 이상이면 게임오버    
     if(lastBubble.offsetTop>=200) {
         gameOver();
     }
@@ -320,17 +317,19 @@ function nearBBChk(i, lastBubble) {
     h = Math.sqrt(g);
 
     setTimeout(function() {
+        // 같은 색깔일때
         if(stopBubble[i].outerHTML[14]==lastBubble.outerHTML[14]) {
        
+            // 3개가 뭉쳤을때 
             if(stopBubble[i].className.indexOf("linked")==18) {
 
                 lastBubble.className += ' linked '+stopBubble[i].id;
             
+            // 2개가 뭉쳤을때
             } else {
-
                 stopBubble[i].className += " linked "+lastBubble.id;
                 lastBubble.className += " linked "+lastBubble.id;
-
+                stopBubble[i].id = lastBubble.id;
             }
         }
     }, 100)
@@ -339,7 +338,7 @@ function nearBBChk(i, lastBubble) {
 }
 
 
-
+// 움직임이 완료 됐을때 movingBubble 클래스를 지우고 stopBubble 클래스를 추가
 function bubbleClassChange() {
     var movingBubble = $('.movingBubble');
     movingBubble.removeClass().addClass('stopBubble').addClass('bubble')
@@ -352,14 +351,10 @@ function test() {
 
 
 
-
-
-
 // 버블이 터지고 점수+
 function bubbleExplosion() {
 
     var lastBubble = $('.lastBubble');
-    var expBubble = $('.expBubble')
     var stopBubble = $('.stopBubble');
     var length = 0;
     
@@ -392,12 +387,11 @@ input.keydown(function(e) {
     var rad = 2*Math.PI*(bubbleDeg/360);    // Radian
     var y = 358*Math.tan(rad);
     var y2 = 121/Math.tan(rad);
-    var tan = Math.tan(rad);
+    var tan = Math.tan(rad);    // 탄젠트
     var y3 = 242/tan;
     
     // space == 32
     if(e.keyCode==229) {
-        // console.log(keyFlag)
         input.blur();
     }
 
@@ -528,10 +522,17 @@ input.keydown(function(e) {
     }
 })
 
-
+// 게임 오버 이벤트
 function gameOver() {
 
-    score = second * count;
+    // 시간제한 나면 점수는 1점
+    if(second==0) {
+        score = count * 1;
+    } else {
+        score = second * count;
+    }
+
+    
     $('#score').text(score)
 
     input.remove();
@@ -544,8 +545,8 @@ function gameOver() {
     
 }
 
-function angleTest() {
-
+// 테스트용 함수
+function Test() {
 
     window.onkeyup = function(e) {
         
@@ -580,28 +581,27 @@ function moveArrow() {
 
     // 오른쪽
     if(keypress['39']) {
-        this.nx += 1;
+
         this.bubbleDeg += 1;                 
-        arrow.css('transform', 'rotate('+nx+'deg)');
+        arrow.css('transform', 'rotate('+bubbleDeg+'deg)');
         bubble.css('transform', 'rotate('+bubbleDeg+'deg)');
         line.css('transform', 'rotate('+bubbleDeg+'deg)');
-        if(this.nx>=72) {
-            console.log(this.nx)
-            this.nx = 71;
+
+        // 일정 각도 이상 움직이면 더이상 못가게
+        if(this.bubbleDeg>=72) {
             this.bubbleDeg = 71; 
         }
     }
 
     // 왼쪽
     if(keypress['37']) {
-        this.nx -= 1;
+
         this.bubbleDeg -= 1;
-        arrow.css('transform', 'rotate('+nx+'deg)');
+        arrow.css('transform', 'rotate('+bubbleDeg+'deg)');
         bubble.css('transform', 'rotate('+bubbleDeg+'deg)');
         line.css('transform', 'rotate('+bubbleDeg+'deg)');
-        if(this.nx<=-72) {
-            console.log(this.nx)
-            this.nx = -71;
+
+        if(this.bubbleDeg<=-72) {
             this.bubbleDeg = -71; 
         }
     }
@@ -629,7 +629,6 @@ function collision() {
     var y3 = 242/tan;
 
     var i = 0;
-    var array = [];
 
     setInterval(function() {
         var loadedBubble = $('.loadedBubble')
@@ -643,21 +642,23 @@ function collision() {
         var g;
         var h=0;
 
-        var cllx = 0;
-        var clly = 0;
 
         try {
 
+            // 버블이 움직일때 스페이스바 입력 못하게
             if(movingBubble.hasClass('movingBubble'))
                 input.blur();
             else
                 input.focus();
 
 
+            // 움직이는 버블과 각 버블 사이의 거리를 계산
             for(var i = 0; i<stopBubble.length; i++) {
+
+
                 g = Math.pow(movingBubble.position().top-stopBubble[i].offsetTop+339, 2) + Math.pow(movingBubble.position().left-stopBubble[i].offsetLeft+101, 2)
                 
-                
+                // 각 버블 사이의 거리
                 h = Math.sqrt(g)
 
                 var x = h - 41
@@ -670,20 +671,9 @@ function collision() {
 
                 if(collision) {
                     
-
                     lastBubble = movingBubble[0];
-
-                   
-                    clly = Math.pow((lastBubble.offsetTop-stopBubble[i].offsetTop+339), 2);
-                    cllx = Math.pow((lastBubble.offsetLeft-stopBubble[i].offsetLeft+101), 2);
-                    var y = (Math.sqrt(clly)-340)
-               
-                    
-                    var top1 = y - 40;
-
-                    var n;
-                    
-                    console.log(i)
+ 
+                                   
                     movingBubble.stop().animate({top:lastBubble.offsetTop-x-338.6},240, nearBBChk(i, lastBubble));  // 붙는 거리 조정;
                     
                     movingBubble.removeClass('movingBubble').addClass('stopBubble')
@@ -701,11 +691,11 @@ function collision() {
 
 
 
-angleTest();
+// Test();  // 테스트
 
-setInterval(moveArrow, 10);
-setInterval(bubbleExplosion, 100);
-setTimeout(gameOver, 60750);
+setInterval(moveArrow, 10); // 화살표 움직임 자연스럽게
+setInterval(bubbleExplosion, 100);  // 터지는 조건을 갖췄는지 체크해서 터트림
+setTimeout(gameOver, 60750);    // 제한시간 60초
 
 $(window).keydown(function(e){ // 어떤 키가 눌렸는지 저장 
     keypress[e.which.toString()] = true;
