@@ -1,5 +1,4 @@
-# RabbitShot
-
+# Bubble
 
 * This Weabapp is a simple bubble shooting game
 
@@ -12,4 +11,4 @@
 
 
 ## Look
-![1](.img/bubblePlaying.png)
+![1](./img/bubblePlaying.png)
